@@ -1,0 +1,67 @@
+.gjs-one-bg {
+    background-color: #463a3c
+}
+
+.gjs-one-color {
+    color: #463a3c
+}
+
+.gjs-one-color-h:hover {
+    color: #463a3c
+}
+
+.gjs-two-bg {
+    background-color: #b9a5a6
+}
+
+.gjs-two-color {
+    color: #b9a5a6
+}
+
+.gjs-two-color-h:hover {
+    color: #b9a5a6
+}
+
+.gjs-three-bg {
+    background-color: #804f7b
+}
+
+.gjs-three-color {
+    color: #804f7b
+}
+
+.gjs-three-color-h:hover {
+    color: #804f7b
+}
+
+.gjs-four-bg {
+    background-color: #d97aa6
+}
+
+.gjs-four-color {
+    color: #d97aa6
+}
+
+.gjs-four-color-h:hover {
+    color: #d97aa6
+}
+
+#saveButton {
+    background-color: #4CAF50;
+    /* Green background color */
+    color: white;
+    /* White text color */
+    padding: 10px 20px;
+    /* Padding around the text */
+    border: none;
+    /* Remove border */
+    border-radius: 5px;
+    /* Add border-radius for rounded corners */
+    cursor: pointer;
+    /* Add a pointer cursor on hover */
+}
+
+#saveButton:hover {
+    background-color: #45a049;
+    /* Darker green color on hover */
+}
