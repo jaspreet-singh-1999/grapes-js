@@ -496,7 +496,7 @@
                 </div>
                 <nav class="menu">
 
-                    <a href="{{route('web-builder')}}"><div class="menu-item">Edit page</div></a>
+                    <a href="#"><div class="menu-item">Edit page</div></a>
                     <div class="menu-item">TEMPLATE</div>
                     <div class="menu-item">WEB</div> 
      

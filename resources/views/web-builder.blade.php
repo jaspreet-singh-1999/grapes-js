@@ -52,6 +52,13 @@
         <script>
             let html = `{!!html_entity_decode($html)!!}`;
             let css = `{{$css}}`;
+            let autoload_val = false;
+            if (html == '' || html == null || html == undefined || css == '' || css == null || css == undefined) {
+                autoload_val = false;
+            }else{
+                autoload_val = true;
+            }
+           
             // Initialize GrapesJS
             var editor = grapesjs.init({
                 fromElement: 1,
@@ -70,10 +77,8 @@
                     'grapesjs-typed': {},
                     'grapesjs-custom-code': {}
                 },
-                storageManager: { autoload: 0 },
-                
+                storageManager: { autoload: autoload_val },
             });
-
             $('#saveButton').on('click',function(e){
                 var html= editor.getHtml()
                 var css= editor.getCss()
@@ -88,7 +93,7 @@
                     },
                     success: function(response) {
                         if(response.success == true){
-                            console.log(response.message);
+                            window.location.href= "{{route('pages-list')}}"
                         }else{
                             console.log(response.message);
                         }

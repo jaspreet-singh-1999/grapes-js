@@ -30,11 +30,14 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('pages-list',[WedPageController::class, 'pagesList'])->name('pages-list'); 
     Route::get('pages-list-data',[WedPageController::class, 'pagesListData'])->name('pages-list-data'); 
     Route::post('save-page',[WedPageController::class,'save_page'])->name('save-page');
-    Route::get('web-editor/{id}',[WedPageController::class,'webBuilder'])->name('web-builder'); 
-    Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor'); 
+    Route::get('edit-page',[WedPageController::class,'edit_page'])->name('edit-page');
+    Route::post('update-page',[WedPageController::class,'page_update'])->name('page-update');
+   
+    Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');    
     Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
-    Route::get('delete-page/{id}',[WedPageController::class,'delete_page'])->name('delete-page');
     
+    Route::get('delete-page/{id}',[WedPageController::class,'delete_page'])->name('delete-page');
+    // Route::get('web-editor/{id}',[WedPageController::class,'webBuilder'])->name('web-builder'); 
 });
 
 // Route::get('/editor', function () {
