@@ -29,9 +29,15 @@
     
         {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> --}}
     
+        <!--  DataTables CDN -->
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
         
+        <!--  Bootstrap CDN -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        
+        <!--  Toster CDN -->
+        <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css"> 
+        <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
         
         <style>
             h2 {
@@ -45,6 +51,7 @@
     </head>
 
     <body class="g-sidenav-show  bg-gray-100">
+        
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             
             @include('admin.layouts.slider')
@@ -55,7 +62,6 @@
             @include('admin.layouts.navbar')
             
             <div class="container-fluid py-4">
-
                 <div class="row">
 
                     @yield('contant')

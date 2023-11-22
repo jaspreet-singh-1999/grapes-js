@@ -19,7 +19,7 @@ Route::get('admin-dashboard',function(){
     return view('admin.dashboard');
 });
 
-Route::get('/',[AuthController::class,'homePage']);
+Route::get('/',[AuthController::class,'homePage'])->name('home');
 Route::get('/login',[AuthController::class,'loginPage'])->name('login');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::post('user-login',[AuthController::class,'user_login'])->name('user-login');
@@ -32,12 +32,15 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::post('save-page',[WedPageController::class,'save_page'])->name('save-page');
     Route::get('edit-page',[WedPageController::class,'edit_page'])->name('edit-page');
     Route::post('update-page',[WedPageController::class,'page_update'])->name('page-update');
-   
-    Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');    
-    Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
-    
     Route::get('delete-page/{id}',[WedPageController::class,'delete_page'])->name('delete-page');
+    
+    // Route::get('page-data',[WedPageController::class,'get_page_data'])->name('get-page-data');    
     // Route::get('web-editor/{id}',[WedPageController::class,'webBuilder'])->name('web-builder'); 
+    
+    Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');
+    Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
+    Route::get('publish-page/{id}',[WedPageController::class,'publish_page'])->name('publish-page');
+    
 });
 
 // Route::get('/editor', function () {

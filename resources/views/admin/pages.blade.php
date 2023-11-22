@@ -102,6 +102,9 @@
                 success:function(data){
                     if(data.success== true){
                         $('#pageModal').modal('hide')
+                        toastr.success(data.message);
+                    }else{
+                        toastr.error(data.message);
                     }
                 }
             });
@@ -144,7 +147,9 @@
                 success:function(data){
                     if(data.success== true){
                         $('#pageEditModal').modal('hide')
-                        console.log(data.message);
+                        toastr.success(data.message)
+                    }else{
+                        toastr.error(data.message)
                     }
                 }
             });

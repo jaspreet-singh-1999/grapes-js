@@ -58,14 +58,12 @@
             }else{
                 autoload_val = true;
             }
-           
+    
             // Initialize GrapesJS
             var editor = grapesjs.init({
                 fromElement: 1,
                 container: '#gjs',
                 width: 'auto',
-                component: html,
-                style: css,
                 plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code'],
                 pluginsOpts:{
                     'grapesjs-preset-webpage': {},
@@ -77,8 +75,13 @@
                     'grapesjs-typed': {},
                     'grapesjs-custom-code': {}
                 },
-                storageManager: { autoload: autoload_val },
-            });
+                storageManager: {  autoload: false },
+    
+            });  
+            //set html css 
+            editor.setComponents(html);
+            editor.setStyle(css);
+
             $('#saveButton').on('click',function(e){
                 var html= editor.getHtml()
                 var css= editor.getCss()
@@ -94,8 +97,9 @@
                     success: function(response) {
                         if(response.success == true){
                             window.location.href= "{{route('pages-list')}}"
+                            toastr.success(response.message)
                         }else{
-                            console.log(response.message);
+                            toastr.error(response.message)
                         }
                     },
                     error: function(error) {

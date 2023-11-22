@@ -13,8 +13,9 @@ class AuthController extends Controller
         return view("login");
     }
    
-    public function homePage(){
-        return view("home");
+    public function homePage($html='', $css=''){
+
+        return view("home",['html'=> $html,'css'=> $css]);
     }
     
     // public function webBuilder(){
@@ -32,7 +33,7 @@ class AuthController extends Controller
             return redirect()->back()->with(['message'=> $validate->messages()]);  
         }
         if(Auth::attempt(['email'=> $input['email'],'password'=> $input['password']])){
-            return redirect()->route('web-builder');
+            return redirect()->route('pages-list');
         }else{
             return redirect()->back()->with(['message'=>'The provided credentials do not match our records.']);
         }

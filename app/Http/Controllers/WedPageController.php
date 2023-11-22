@@ -10,6 +10,7 @@ use Illuminate\Validation\Rules\Unique;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Brian2694\Toastr\Facades\Toastr;
 
 class WedPageController extends Controller
 {
@@ -45,8 +46,9 @@ class WedPageController extends Controller
                 })
                 ->addColumn('action', function($data){
                     return '<a href="'.route('editor',$data->id).'" class="btn btn-xs btn-primary">Edit with editor</a>'. ' ' .
-                    '<a href="'.route('delete-page',$data->id).'"class="btn btn-xs btn-primary">Delete</a>'.' '.
-                    '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary editPage">Edit</a>';
+                    '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary editPage">Edit</a>'.' '.
+                    '<a href="'.route('publish-page',$data->id).'" class="btn btn-xs btn-primary">Publish</a>'.' '.
+                    '<a href="'.route('delete-page',$data->id).'"class="btn btn-xs btn-primary">Delete</a>';
                 }) 
                 ->rawColumns(['action'])
                 ->make(true);
@@ -73,35 +75,46 @@ class WedPageController extends Controller
                 ];
                 return response()->json($response);
             }
+            $checkPageExists= WebPage::where('page_title',$input['page_title'])->exists();
+            if($checkPageExists){
+                $message= 'Page already exists';
+                // Toastr::error($message ,'Error',["positionClass" => "toast-top-center"]);
+                return redirect()->back()->with(['message'=>$message]);
+            } 
 
-            $slug= Str::lower($input['page_title']);
-            $replace_slug= str_replace(' ','-',$slug);
+            $create_slug= Str::lower($input['page_title']);
+            $slug= str_replace(' ','-',$create_slug);
 
             $page= [
                 'page_id'=> rand(100000,9999),
                 'page_title'=> $input['page_title'],
-                'page_slug'=> $replace_slug,
+                'page_slug'=> $slug,
                 'description'=> $input['description'],
                 'created_by'=> Auth::user()->id
             ];
             $createPage= WebPage::create($page);
-            if($createPage){    
+            if($createPage){  
+                $message= 'Page created successfully';  
                 $response=[
                     'success'=> true,
                     'status'=> 201,
-                    'message'=> 'page created successfully'
+                    'message'=> $message
                 ];
+
                 return response()->json($response);
             }else{
+                $message= 'Error in page creation';
                 $response=[
                     'success'=> false,
                     'status'=> 500,
-                    'message'=> 'Rrror in create page'
+                    'message'=>  $message
                 ];
                 return response()->json($response);
             }
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
         }
     }
 
@@ -150,13 +163,13 @@ class WedPageController extends Controller
                 return response()->json($response);
             }
 
-            $slug= Str::lower($input['page_title']);
-            $replace_slug= str_replace(' ','-',$slug);
+            $create_slug= Str::lower($input['page_title']);
+            $slug= str_replace(' ','-',$create_slug);
 
             $page= WebPage::where('id',$input['id'])->first();
             if($page){
                 $page->page_title= $input['page_title'];
-                $page->page_slug= $replace_slug;
+                $page->page_slug= $slug;
                 $page->description= $input['description'];
                 $page->updated_by= Auth::user()->id;
                 $update= $page->save();
@@ -173,12 +186,14 @@ class WedPageController extends Controller
                 $response=[
                     'success'=> false,
                     'status'=> 500,
-                    'message'=> 'Rrror in create page'
+                    'message'=> 'Error in create page'
                 ];
                 return response()->json($response);
             }
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
         }
     }
 
@@ -211,7 +226,9 @@ class WedPageController extends Controller
                 return response()->json($response);
             }
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
         }
     }
 
@@ -228,6 +245,40 @@ class WedPageController extends Controller
             } 
         }catch(Exception $e){
             dd($e->getMessage());
+        }
+    }
+
+    public function get_page_data(Request $request){
+        try{
+            $getPageData= WebPage::where('id',$request->id)->first();
+            if($getPageData){
+                $pageData= [
+                    'html'=> json_decode($getPageData['page_html']),
+                    'css'=> json_decode($getPageData['page_css'])
+                ];
+                $response= [
+                    'success'=> true,
+                    'status'=> 200,
+                    'page'=> $pageData,
+                    'message'=> 'Page found'
+                ];
+                return response()->json($response);
+            }else{
+                $response= [
+                    'success'=> true,
+                    'status'=> 200,
+                    'message'=> 'Page data not found'
+                ];
+                return response()->json($response);
+            }
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            $response= [
+                'success'=> true,
+                'status'=> 200,
+                'message'=> 'Page data not found'
+            ];
+            return response()->json($response);
         }
     }
 
@@ -261,7 +312,30 @@ class WedPageController extends Controller
                 }
             }
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
+        }
+    }
+
+    public function publish_page($id){
+        try{
+            $getPage= WebPage::where('id',$id)->first();
+            if($getPage){
+                $pageHtml= json_decode($getPage['page_html']);
+                $html= str_replace(['<body>','</body>'],'',$pageHtml);
+
+                $pageCss= json_decode($getPage['page_css']);
+                // Toastr::success('Page publish successfully','Success',["positionClass" => "toast-top-center"]);
+                return view('home',['css'=> $pageCss,'html'=> $html]);
+            }else{
+                // Toastr::success('Error to Page publish ','Error',["positionClass" => "toast-top-center"]);
+                return redirect()->back();
+            }
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            // Toastr::success($message ,'Error',["positionClass" => "toast-top-center"]);
+            return redirect()->back();
         }
     }
 }
