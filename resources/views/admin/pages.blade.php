@@ -88,6 +88,32 @@
             $('#pageEditModal').modal('hide');
         });
 
+        let table = $('#pages-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax:"{{route('pages-list-data')}}",
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                { 
+                    data: 'page_slug', 
+                    name: 'page_slug' 
+                },
+                { 
+                    data: 'page_title', 
+                    name: 'page_title' 
+                },
+                { 
+                    data: 'action', name: 'action', 
+                    orderable: false, 
+                    searchable: false 
+                }
+            ]
+        });
         $('#save').on('click',function(){
             var page_title= $('#page_title').val();
             var description= $('#description').val();
@@ -103,6 +129,7 @@
                     if(data.success== true){
                         $('#pageModal').modal('hide')
                         toastr.success(data.message);
+                        table.draw();
                     }else{
                         toastr.error(data.message);
                     }
@@ -148,6 +175,7 @@
                     if(data.success== true){
                         $('#pageEditModal').modal('hide')
                         toastr.success(data.message)
+                        table.draw();
                     }else{
                         toastr.error(data.message)
                     }
@@ -155,35 +183,5 @@
             });
         });
     });
-
-    $(function(){
-        $('#pages-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax:"{{route('pages-list-data')}}",
-            columns: [
-                {
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                { 
-                    data: 'page_slug', 
-                    name: 'page_slug' 
-                },
-                { 
-                    data: 'page_title', 
-                    name: 'page_title' 
-                },
-                { 
-                    data: 'action', name: 'action', 
-                    orderable: false, 
-                    searchable: false 
-                }
-            ]
-        });
-    });
-    
 </script>
 @endSection

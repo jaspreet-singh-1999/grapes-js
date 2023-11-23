@@ -47,7 +47,7 @@ class WedPageController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="'.route('editor',$data->id).'" class="btn btn-xs btn-primary">Edit with editor</a>'. ' ' .
                     '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary editPage">Edit</a>'.' '.
-                    '<a href="'.route('publish-page',$data->id).'" class="btn btn-xs btn-primary">Publish</a>'.' '.
+                    '<a href="'.route('home',$data->page_slug).'" class="btn btn-xs btn-primary">Publish</a>'.' '.
                     '<a href="'.route('delete-page',$data->id).'"class="btn btn-xs btn-primary">Delete</a>';
                 }) 
                 ->rawColumns(['action'])
@@ -78,8 +78,12 @@ class WedPageController extends Controller
             $checkPageExists= WebPage::where('page_title',$input['page_title'])->exists();
             if($checkPageExists){
                 $message= 'Page already exists';
-                // Toastr::error($message ,'Error',["positionClass" => "toast-top-center"]);
-                return redirect()->back()->with(['message'=>$message]);
+                $response=[
+                    'success'=> false,
+                    'status'=> 500,
+                    'message'=> $message
+                ];
+                return response()->json($response);
             } 
 
             $create_slug= Str::lower($input['page_title']);
@@ -179,7 +183,7 @@ class WedPageController extends Controller
                 $response=[
                     'success'=> true,
                     'status'=> 201,
-                    'message'=> 'page created successfully'
+                    'message'=> 'Page update successfully'
                 ];
                 return response()->json($response);
             }else{
@@ -315,27 +319,6 @@ class WedPageController extends Controller
             $message= $e->getMessage();
             $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
             return response()->json($response);
-        }
-    }
-
-    public function publish_page($id){
-        try{
-            $getPage= WebPage::where('id',$id)->first();
-            if($getPage){
-                $pageHtml= json_decode($getPage['page_html']);
-                $html= str_replace(['<body>','</body>'],'',$pageHtml);
-
-                $pageCss= json_decode($getPage['page_css']);
-                // Toastr::success('Page publish successfully','Success',["positionClass" => "toast-top-center"]);
-                return view('home',['css'=> $pageCss,'html'=> $html]);
-            }else{
-                // Toastr::success('Error to Page publish ','Error',["positionClass" => "toast-top-center"]);
-                return redirect()->back();
-            }
-        }catch(Exception $e){
-            $message= $e->getMessage();
-            // Toastr::success($message ,'Error',["positionClass" => "toast-top-center"]);
-            return redirect()->back();
         }
     }
 }

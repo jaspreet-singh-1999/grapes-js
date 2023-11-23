@@ -103,11 +103,9 @@
         </style>
     </head>
     <body>
-        <div class="main">  	
+        <div class="main"> 
             <input type="checkbox" id="chk" aria-hidden="true">
-           
             <div class="signup">
-            
                 <form>
                     <label for="chk" aria-hidden="true">Sign up</label>
                     <input type="text" name="txt" placeholder="User name" required="">
