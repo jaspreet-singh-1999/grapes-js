@@ -52,16 +52,9 @@
         <script>
             let html = `{!!html_entity_decode($html)!!}`;
             let css = `{{$css}}`;
-            let autoload_val = false;
-            if (html == '' || html == null || html == undefined || css == '' || css == null || css == undefined) {
-                autoload_val = false;
-            }else{
-                autoload_val = true;
-            }
-    
+            
             // Initialize GrapesJS
             var editor = grapesjs.init({
-                fromElement: 1,
                 container: '#gjs',
                 width: 'auto',
                 plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code'],
