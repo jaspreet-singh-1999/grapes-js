@@ -38,6 +38,8 @@
         <!--  Toster CDN -->
         <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css"> 
         <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+       
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         
         <style>
             h2 {
@@ -46,7 +48,15 @@
             a#edit-page {
                 margin-left: 296px;
             }
-           
+            .btn:not([class*="btn-outline-"]) {
+                border: 0;
+                height: 31px;
+                font-size: 12px;
+                font-family: ui-monospace;
+                background-color: mediumslateblue;
+                font-weight: bold;
+            }
+ 
         </style>
     </head>
 

@@ -47,8 +47,9 @@ class WedPageController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="'.route('editor',$data->id).'" class="btn btn-xs btn-primary">Edit with editor</a>'. ' ' .
                     '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary editPage">Edit</a>'.' '.
-                    '<a href="'.route('home',$data->page_slug).'" class="btn btn-xs btn-primary">Publish</a>'.' '.
-                    '<a href="'.route('delete-page',$data->id).'"class="btn btn-xs btn-primary">Delete</a>';
+                    '<a href="'.route('delete-page',$data->id).'"class="btn btn-xs btn-primary">Delete</a>'.' '.
+                    '<a href="'.route('home',$data->page_slug).'"class="btn btn-xs btn-primary">Preview</a>'.' '.
+                    '<a href="#" data-id="'.$data->id.'" class="btn btn-xs btn-primary publish ">Publish</a>';
                 }) 
                 ->rawColumns(['action'])
                 ->make(true);
@@ -318,6 +319,52 @@ class WedPageController extends Controller
         }catch(Exception $e){
             $message= $e->getMessage();
             $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
+        }
+    }
+
+    public function publish_page(Request $request){
+        try{
+            $gatPage= WebPage::where('id',$request->page_id)->first();
+            if($gatPage){
+                if($gatPage->status == 1){
+                    $gatPage->status= 2;
+                    $gatPage->updated_by= Auth::user()->id;
+                    $gatPage->save();
+                    $response= [
+                        'success'=> true,
+                        'status'=> 200,
+                        'message'=> 'Page publish successfully',
+                        'page_status'=> $gatPage->status
+                    ];
+                    return response()->json($response);
+                }else{
+                    $gatPage->status= 1;
+                    $gatPage->updated_by= Auth::user()->id;
+                    $gatPage->save();
+                    $response= [
+                        'success'=> true,
+                        'status'=> 200,
+                        'message'=> 'Page unpublish successfully',
+                        'page_status'=> $gatPage->status
+                    ];
+                    return response()->json($response);
+                }
+            }else{
+                $response= [
+                    'success'=> false,
+                    'status'=> 500,
+                    'message'=> 'Page not found',
+                ];
+                return response()->json($response);
+            }
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            $response= [
+                'success'=> false,
+                'status'=> 500,
+                'message'=> $message
+            ];
             return response()->json($response);
         }
     }

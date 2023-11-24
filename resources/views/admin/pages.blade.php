@@ -182,6 +182,27 @@
                 }
             });
         });
+
+        $('#pages-table').on('click','.publish',function(){
+            let page_id= $(this).data('id');
+            let button_text= $(this);  
+            $.ajax({
+                url:"{{route('publish-page')}}",
+                type:'get',
+                data:{
+                    page_id: page_id,
+                },
+                success:function(data){
+                    if(data.page_status == 2){
+                       button_text.text('Unpublish')
+                       toastr.success(data.message)
+                    }else{
+                        button_text.text('Publish')
+                       toastr.success(data.message)
+                    }
+                }
+            });
+        });
     });
 </script>
 @endSection

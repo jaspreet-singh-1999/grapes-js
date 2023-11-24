@@ -38,14 +38,15 @@ Route::middleware(['web','auth-user'])->group(function () {
     
     Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');
     Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
-    Route::get('publish-page/{id}',[WedPageController::class,'publish_page'])->name('publish-page');
+    
+    
+    Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
+
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
     
 });
 
-// Route::get('/editor', function () {
-//     return view('welcome');
-// });
+Route::get('/{page_slug}', [AuthController::class,'page_using_slug'])->name('page-slug');
 
 
 

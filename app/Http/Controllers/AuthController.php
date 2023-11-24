@@ -8,6 +8,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use App\Models\WebPage;
 use Exception;
+use PHPUnit\Framework\Constraint\IsEmpty;
 
 class AuthController extends Controller
 {
@@ -16,6 +17,32 @@ class AuthController extends Controller
         return view("login");
     }
    
+
+    public function page_using_slug($slug){
+        try{
+            $getPage= WebPage::where('page_slug',$slug)->first();
+            if(!empty($getPage)){
+                if($getPage->status == 2){
+                    $pageHtml= json_decode($getPage['page_html']);
+                    $html= str_replace(['<body>','</body>'],'',$pageHtml);
+                    $pageCss= json_decode($getPage['page_css']);
+    
+                    return view('home',['html'=> $html,'css'=> $pageCss,'title'=>$slug]);
+                }else{
+                    Toastr::success('This Page is not publish');
+                    return view('unpublish');
+                }
+            }else{
+                return redirect()->back();
+            }
+            
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            return redirect()->back();
+        }
+    }
+    
+
     public function homePage($page_slug){
         try{
             $getPage= WebPage::where('page_slug',$page_slug)->first();
