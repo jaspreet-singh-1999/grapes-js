@@ -19,6 +19,7 @@ Route::get('admin-dashboard',function(){
     return view('admin.dashboard');
 });
 
+// for admin url 
 Route::get('/admin/{page_slug}',[AuthController::class,'homePage'])->name('home');
 Route::get('login',[AuthController::class,'loginPage'])->name('login');
 Route::post('user-login',[AuthController::class,'user_login'])->name('user-login');
@@ -39,14 +40,11 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');
     Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
     
-    
     Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
 
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
     
 });
 
+// for public url
 Route::get('/{page_slug}', [AuthController::class,'page_using_slug'])->name('page-slug');
-
-
-

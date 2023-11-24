@@ -17,7 +17,7 @@ class AuthController extends Controller
         return view("login");
     }
    
-
+    // for public preview 
     public function page_using_slug($slug){
         try{
             $getPage= WebPage::where('page_slug',$slug)->first();
@@ -29,40 +29,17 @@ class AuthController extends Controller
     
                     return view('home',['html'=> $html,'css'=> $pageCss,'title'=>$slug]);
                 }else{
-                    Toastr::success('This Page is not publish');
                     return view('unpublish');
                 }
             }else{
-                return redirect()->back();
-            }
-            
+                return view('unpublish');
+            }   
         }catch(Exception $e){
             $message= $e->getMessage();
-            return redirect()->back();
+            dd($message);
         }
     }
     
-
-    public function homePage($page_slug){
-        try{
-            $getPage= WebPage::where('page_slug',$page_slug)->first();
-            if($getPage){
-                $pageHtml= json_decode($getPage['page_html']);
-                $html= str_replace(['<body>','</body>'],'',$pageHtml);
-                $pageCss= json_decode($getPage['page_css']);
-
-                return view('home',['html'=> $html,'css'=> $pageCss,'title'=>$page_slug]);
-            }else{
-                Toastr::success('Page not found');
-                return redirect()->back();
-            }
-        }catch(Exception $e){
-            $message= $e->getMessage();
-            return redirect()->back();
-        }
-    }
-    
-
     public function user_login(Request $request){
         
         $input = $request->all();
@@ -85,5 +62,26 @@ class AuthController extends Controller
     public function logout(){
         $logout = Auth::logout();
         return redirect()->route('login');
+    }
+
+    // for admin preview 
+    public function homePage($page_slug){
+        try{
+            $getPage= WebPage::where('page_slug',$page_slug)->first();
+            if($getPage){
+                $pageHtml= json_decode($getPage['page_html']);
+                $html= str_replace(['<body>','</body>'],'',$pageHtml);
+                $pageCss= json_decode($getPage['page_css']);
+
+                return view('home',['html'=> $html,'css'=> $pageCss,'title'=>$page_slug]);
+            }else{
+                Toastr::success('Page not found');
+                return redirect()->back();
+            }
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            dd($message);
+            return redirect()->back();
+        }
     }
 }

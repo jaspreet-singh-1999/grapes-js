@@ -140,7 +140,6 @@ class WedPageController extends Controller
                     'message'=> 'Page found'
                 ];
                 return response()->json($response);
-                // return view('admin.pages',['page'=>$getPageDetail]);
             }else{
                 $response= ['success'=> true, 'status'=> 500, 'message'=> 'Page not found'];    
             }

@@ -66,8 +66,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Project setup
-Php v- 8.2
-Laravel v- 10.10
+- Php v- 8.2
+- Laravel v- 10.10
 
-run migration 
-run seeder User
+- Run migration 
+- Run seeder User
+
+- Login credentials
+- Email: testing@yopmail.com
+- Password: 123456
