@@ -56,6 +56,9 @@
                 background-color: mediumslateblue;
                 font-weight: bold;
             }
+            select.form-control.m-bot15 {
+                width: 150px;
+            }
  
         </style>
     </head>

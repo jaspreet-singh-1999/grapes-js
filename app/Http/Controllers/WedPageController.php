@@ -6,28 +6,30 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\WebPage;
 use Auth;
-use Illuminate\Validation\Rules\Unique;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Brian2694\Toastr\Facades\Toastr;
+use App\Models\PostStatus;
+use Illuminate\Support\Facades\Hash;
 
 class WedPageController extends Controller
 {
-
+    // for admin dashboard
     public function admin_home(){
        
         return view('admin.dashboard');
     }
-
+    // for page list 
     public function pagesList(){
-        return view('admin.pages');
+        $getPostStatus= PostStatus::all();
+        return view('admin.pages',['page_status'=> $getPostStatus]);
     }
-
+    
     public function webBuilder($id){
         return view('web-builder',['id'=> $id]);
     }
 
+    //This function list the all pages
     public function pagesListData(){
 
         try{
@@ -60,6 +62,7 @@ class WedPageController extends Controller
         }
     }
 
+    // This function create a new page 
     public function save_page(Request $request){
         try{
             $input= $request->all();
@@ -68,14 +71,16 @@ class WedPageController extends Controller
                 'description'=> 'required'
             ]);
 
-            if($validation->failed()){
+            if($validation->fails()){
                 $response= [
-                    'success'=> true,
-                    'status'=> 201,
-                    'message'=> $validation->messages()
+                    'success'=> false,
+                    'status'=> 500,
+                    'message'=> $validation->messages()->first()
                 ];
+
                 return response()->json($response);
             }
+
             $checkPageExists= WebPage::where('page_title',$input['page_title'])->exists();
             if($checkPageExists){
                 $message= 'Page already exists';
@@ -88,13 +93,14 @@ class WedPageController extends Controller
             } 
 
             $create_slug= Str::lower($input['page_title']);
-            $slug= str_replace(' ','-',$create_slug);
-
+            $slug = Str::of($create_slug)->slug('-');
             $page= [
                 'page_id'=> rand(100000,9999),
                 'page_title'=> $input['page_title'],
                 'page_slug'=> $slug,
                 'description'=> $input['description'],
+                'status'=> $input['status'],
+                'protected_password'=> Hash::make($input['password']) ?? null,
                 'created_by'=> Auth::user()->id
             ];
             $createPage= WebPage::create($page);
@@ -122,7 +128,8 @@ class WedPageController extends Controller
             return response()->json($response);
         }
     }
-
+    
+    // This function edit the page 
     public function edit_page(Request $request){
         try{
     
@@ -131,7 +138,9 @@ class WedPageController extends Controller
                 $data=[
                     'page_id'=> $getPageDetail['id'],
                     'page_title'=> $getPageDetail['page_title'],
-                    'description'=>$getPageDetail['description']
+                    'page_slug'=> $getPageDetail['page_slug'],
+                    'description'=>$getPageDetail['description'],
+                    'status'=>$getPageDetail['status'],
                 ];
                 $response= [
                     'success'=> true, 
@@ -150,11 +159,13 @@ class WedPageController extends Controller
         }
     }
 
+    // This function update the page 
     public function page_update(Request $request){
         try{
             $input= $request->all();
             $validation = validator::make($input,[
                 'page_title'=>'required',
+                'page_slug'=>'required',
                 'description'=> 'required'
             ]);
 
@@ -167,14 +178,25 @@ class WedPageController extends Controller
                 return response()->json($response);
             }
 
-            $create_slug= Str::lower($input['page_title']);
-            $slug= str_replace(' ','-',$create_slug);
+            $create_slug= Str::lower($input['page_slug']);
+            $slug = Str::of($create_slug)->slug('-');
+            $checkSlugExists= WebPage::where('page_slug',$slug)->where('id','!=',$input['id'])->exists();
+            if($checkSlugExists){
+                $message= 'Page slug aleary exists try another slug';  
+                $response=[
+                    'success'=> false,
+                    'status'=> 500,
+                    'message'=> $message
+                ];
+                return response()->json($response);
+            }
 
             $page= WebPage::where('id',$input['id'])->first();
             if($page){
                 $page->page_title= $input['page_title'];
                 $page->page_slug= $slug;
                 $page->description= $input['description'];
+                $page->status= $input['status'];
                 $page->updated_by= Auth::user()->id;
                 $update= $page->save();
             }
@@ -200,7 +222,8 @@ class WedPageController extends Controller
             return response()->json($response);
         }
     }
-
+    
+    // This function delete the page  
     public function delete_page($id){
         try{
             $getPage= WebPage::where('id',$id)->first();
@@ -236,6 +259,7 @@ class WedPageController extends Controller
         }
     }
 
+    // This function edit the page in builder
     public function pageEdit($id){
         
         try{
@@ -286,6 +310,7 @@ class WedPageController extends Controller
         }
     }
 
+    // This function save the editor data
     public function save_page_data(Request $request){
         
         try{
@@ -322,12 +347,13 @@ class WedPageController extends Controller
         }
     }
 
+    // This function change the status of the page publish & unpublish 
     public function publish_page(Request $request){
         try{
             $gatPage= WebPage::where('id',$request->page_id)->first();
             if($gatPage){
                 if($gatPage->status == 1){
-                    $gatPage->status= 2;
+                    $gatPage->status= 3;
                     $gatPage->updated_by= Auth::user()->id;
                     $gatPage->save();
                     $response= [
@@ -366,5 +392,9 @@ class WedPageController extends Controller
             ];
             return response()->json($response);
         }
+    }
+
+    public function menu_page(){
+        return view('admin.menu-page');
     }
 }

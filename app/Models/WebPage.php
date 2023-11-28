@@ -19,6 +19,7 @@ class WebPage extends Model
         'page_html',
         'page_css',
         'status',
+        'protected_password',
         'created_by',
         'updated_by',
         'created_at',

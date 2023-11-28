@@ -22,7 +22,7 @@ class AuthController extends Controller
         try{
             $getPage= WebPage::where('page_slug',$slug)->first();
             if(!empty($getPage)){
-                if($getPage->status == 2){
+                if($getPage->status == 3){
                     $pageHtml= json_decode($getPage['page_html']);
                     $html= str_replace(['<body>','</body>'],'',$pageHtml);
                     $pageCss= json_decode($getPage['page_css']);

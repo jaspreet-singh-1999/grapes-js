@@ -23,6 +23,24 @@
                 <label for="message-text" class="col-form-label">Description</label>
                 <textarea class="form-control" name="description" id="description" value=""></textarea>
             </div>
+
+            <div class="form-group">
+                <div class="dropdown page-status">
+                    <select class="form-select" type="text" name="status_id" id="selectStatus">
+                        <option selected value="">Select Page status</option>
+                        @foreach ($page_status as $status )
+                            <option value="{{$status->status_id}}">{{ $status->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <span class="input-error-message" id="admin_id_error"></span>
+            </div>
+
+            <div class="form-group" id="password-protected" style="display:none;">
+                <label for="recipient-name" class="col-form-label">Passwords</label>
+                <input type="password" name="protected_password" class="form-control" id="password" value="" >
+            </div>
+
           </form>
         </div>
         <div class="modal-footer">
@@ -33,6 +51,7 @@
     </div>
 </div>
 {{-- page modal end --}}
+
 {{-- edit page modal start  --}}
 <div class="modal fade" id="pageEditModal" tabindex="-1" role="dialog" aria-labelledby="pageModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -50,8 +69,25 @@
             </div>
 
             <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Page slug</label>
+                <input type="text" name="page_slug" class="form-control" id="edit_slug" value="">
+            </div>
+
+            <div class="form-group">
                 <label for="message-text" class="col-form-label">Description</label>
                 <textarea class="form-control" name="description" id="edit_description" value=""></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="dropdown page-status">
+                    <select class="form-select" type="text" name="status_id" id="select_status">
+                        <option selected value="">Select Page status</option>
+                        @foreach ($page_status as $status )
+                            <option value="{{$status->status_id}}">{{ $status->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <span class="input-error-message" id="admin_id_error"></span>
             </div>
           </form>
         </div>
@@ -114,16 +150,22 @@
                 }
             ]
         });
+
         $('#save').on('click',function(){
-            var page_title= $('#page_title').val();
-            var description= $('#description').val();
+            let page_title= $('#page_title').val();
+            let description= $('#description').val();
+            let status= $('#selectStatus').val();
+            let protected_password= $('#password').val();
+
             $.ajax({
                 type:'POST',
                 url:"{{route('save-page')}}",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data:{
                     page_title: page_title,
-                    description:description
+                    description:description,
+                    status: status,
+                    password:protected_password 
                 },
                 success:function(data){
                     if(data.success== true){
@@ -149,7 +191,9 @@
                     if(data.success == true){
                         $('#page_id').val(data.pageDetails.page_id);
                         $('#edit_title').val(data.pageDetails.page_title);
+                        $('#edit_slug').val(data.pageDetails.page_slug);
                         $('#edit_description').val(data.pageDetails.description);
+                        $('#select_status').val(data.pageDetails.status);
                         $('#pageEditModal').modal('show');
                         console.log(data.message);
                     }
@@ -158,9 +202,11 @@
         });
 
         $('#save_data').on('click',function(){
-            var id= $('#page_id').val();
-            var page_title= $('#edit_title').val();
-            var description= $('#edit_description').val();
+            let id= $('#page_id').val();
+            let page_title= $('#edit_title').val();
+            let page_slug= $('#edit_slug').val();
+            let status= $('#select_status').val();
+            let description= $('#edit_description').val();
 
             $.ajax({
                 type:'POST',
@@ -169,6 +215,8 @@
                 data:{
                     id: id,
                     page_title: page_title,
+                    page_slug: page_slug,
+                    status: status,
                     description: description
                 },
                 success:function(data){
@@ -193,7 +241,7 @@
                     page_id: page_id,
                 },
                 success:function(data){
-                    if(data.page_status == 2){
+                    if(data.page_status == 3){
                        button_text.text('Unpublish')
                        toastr.success(data.message)
                     }else{
@@ -202,6 +250,15 @@
                     }
                 }
             });
+        });
+
+        $('#selectStatus').on('change',function(){
+            let status= $(this).val();
+            if(status == 4){
+                $('#password-protected').show();
+            }else{
+                $('#password-protected').hide();
+            }
         });
     });
 </script>
