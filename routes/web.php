@@ -42,7 +42,8 @@ Route::middleware(['web','auth-user'])->group(function () {
     
     Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::get('menu-page',[WedPageController::class,'menu_page'])->name('menu-page');
+
+    Route::get('custom-field',[WedPageController::class,'custom_field'])->name('custom-field');
     
 });
 

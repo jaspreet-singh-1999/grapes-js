@@ -19,11 +19,13 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->json('page_html');
             $table->json('page_css');
-            $table->integer('status')->comment('1=> draft, 2=> publish')->default(1);
+            $table->integer('status')->comment('draft=> 1, pending_review=> 2, Publish=> 3, password_protected=> 4, trash=> 5')->default(0);
+            $table->string('protected_password')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            
         });
     }
 
