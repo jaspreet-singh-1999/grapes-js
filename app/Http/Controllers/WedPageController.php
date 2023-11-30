@@ -394,8 +394,4 @@ class WedPageController extends Controller
         }
     }
 
-    public function custom_field(){
-        $getFieldType= PostStatus::where('module','field_type')->get();
-        return view('admin.custom-page',['fieldType'=> $getFieldType]);
-    }
 }

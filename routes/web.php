@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WedPageController;
+use App\Http\Controllers\CustomFieldController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +43,14 @@ Route::middleware(['web','auth-user'])->group(function () {
     
     Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
-
-    Route::get('custom-field',[WedPageController::class,'custom_field'])->name('custom-field');
     
+    // custome route
+    Route::get('custom-field',[CustomFieldController::class,'custom_field'])->name('custom-field');
+    Route::get('custom-list',[CustomFieldController::class,'field_list'])->name('field_list');
+    Route::get('add-field',[CustomFieldController::class,'add_field'])->name('add-field');
+    Route::post('save-field',[CustomFieldController::class,'saveField'])->name('save-field');
+    Route::get('edit-field/{id}',[CustomFieldController::class,'editField'])->name('edit');
+
 });
 
 // for public url

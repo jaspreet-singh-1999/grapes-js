@@ -18,19 +18,7 @@ class PostStatusSeeder extends Seeder
             ['module'=> 'post','status_id'=> 2,'name'=> 'Pending review','created_by'=> 1],
             ['module'=> 'post','status_id'=> 3,'name'=> 'Publish','created_by'=> 1], 
             ['module'=> 'post','status_id'=> 4,'name'=> 'Password protected','created_by'=> 1], 
-            ['module'=> 'post','status_id'=> 5,'name'=> 'Trash','created_by'=> 1],
-
-            ['module'=> 'field_type','status_id'=> 1,'name'=> 'Text','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 2,'name'=> 'Number','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 3,'name'=> 'Range','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 4,'name'=> 'Email','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 5,'name'=> 'Url','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 6,'name'=> 'Password','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 7,'name'=> 'Image','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 8,'name'=> 'File','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 9,'name'=> 'Select','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 10,'name'=> 'Checkbox','created_by'=> 1],
-            ['module'=> 'field_type','status_id'=> 11,'name'=> 'True/False','created_by'=> 1],
+            ['module'=> 'post','status_id'=> 5,'name'=> 'Trash','created_by'=> 1]
 
         ];
 

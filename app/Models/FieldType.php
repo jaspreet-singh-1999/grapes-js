@@ -4,17 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CustomField;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class PostStatus extends Model
+class FieldType extends Model
 {
-    use HasFactory;
-    protected $table= "post_status";
+    use HasFactory,SoftDeletes;
+    protected $table= 'field_types';
     protected $fillable= [
         'id',
-        'module',
-        'status_id',
         'name',
         'created_by',
         'updated_by',
@@ -22,4 +19,5 @@ class PostStatus extends Model
         'updated_at',
         'deleted_at'
     ];
+  
 }

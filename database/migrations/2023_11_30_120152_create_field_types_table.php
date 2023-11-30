@@ -11,21 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_field',function(Blueprint $table){
+        Schema::create('field_types', function (Blueprint $table) {
             $table->id();
-            $table->string('group_name');
-            $table->string('group_key');
-            $table->string('field_key');
-            $table->string('type');
-            $table->string('label');
             $table->string('name');
-            $table->string('default_value');
-            $table->integer('status')->comment('deactivate => 0, active=> 1')->default(1);
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
         });
     }
 
@@ -34,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::drop('custom_field');
+        Schema::dropIfExists('field_types');
     }
 };

@@ -61,6 +61,19 @@
             select.form-control.m-bot15 {
                 width: 150px;
             }
+            button#add {
+                float: right;
+                margin-top: -45px;
+            }
+            h4 {
+                margin-top: 30px;
+            }
+    
+            a#save {
+                float: right;
+                margin-top: -50px;
+                margin-right: 14px;
+            }
  
         </style>
     </head>
