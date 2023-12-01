@@ -74,7 +74,7 @@
             let default_value= $('#default_value').val();
            
             $.ajax({
-                url: "{{route('save-field')}}",
+                url: "{{route('update')}}",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data:{
@@ -88,7 +88,9 @@
                 success:function(data){
                     if(data.success == true){
                         toastr.success(data.message);
-                        window.location.href= "{{route('custom-field')}}";
+                        setTimeout(() => {
+                            window.location.href= "{{route('custom-field')}}";
+                        }, 2000);
                     }else{
                         toastr.error(data.message);
                     }

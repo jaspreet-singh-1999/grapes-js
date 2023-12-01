@@ -246,7 +246,7 @@
                        toastr.success(data.message)
                     }else{
                         button_text.text('Publish')
-                       toastr.success(data.message)
+                        toastr.success(data.message)
                     }
                 }
             });

@@ -50,6 +50,9 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('add-field',[CustomFieldController::class,'add_field'])->name('add-field');
     Route::post('save-field',[CustomFieldController::class,'saveField'])->name('save-field');
     Route::get('edit-field/{id}',[CustomFieldController::class,'editField'])->name('edit');
+    Route::post('update-field',[CustomFieldController::class,'updateField'])->name('update');
+    Route::get('change-status',[CustomFieldController::class,'changeStatus'])->name('change-status');
+    Route::get('delete-field/{id}',[CustomFieldController::class,'deleteField'])->name('delete');
 
 });
 

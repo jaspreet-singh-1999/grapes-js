@@ -9,6 +9,7 @@ use App\Models\CustomField;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
+use Brian2694\Toastr\Facades\Toastr;
 use Auth;
 
 class CustomFieldController extends Controller
@@ -41,14 +42,14 @@ class CustomFieldController extends Controller
                 return $data->fieldType->name;
             })
             ->addColumn('action',function($data){
-                return '<a href="#" class= "btn btn-btn primary">Deactivate</a>'.' '.
-                '<a href="'.route('edit',$data->id).'" class= "btn btn-btn primary">Edit</a>';
+                return '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary status">Deactivate</a>'.' '.
+                '<a href="'.route('edit',$data->id).'" class= "btn btn-xs btn-primary ">Edit</a>'.' '.
+                '<a href="'.route('delete',$data->id).'" class= "btn btn-xs btn-primary ">Delete</a>';
             })
             ->rawColumns(['action'])
             ->make(true);
         }catch(Exception $e){
             $message= $e->getMessage();
-            dd($message);
             $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
             return response()->json($response);
         }
@@ -131,7 +132,6 @@ class CustomFieldController extends Controller
             $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
             return response()->json($response);
         }
-        
     }
 
     public function updateField(Request $request){
@@ -183,6 +183,60 @@ class CustomFieldController extends Controller
                     'message'=>  $message
                 ];
                 return response()->json($response);
+            }
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
+        }
+    }
+    
+    public function changeStatus(Request $request){
+        try{
+            $getField= CustomField::where('id',$request->id)->first();
+            if($getField){
+                if($getField->status == 1){
+                    $getField->status=0;
+                    $getField->updated_by= Auth::user()->id;
+                    $update= $getField->save();
+                    $response= [
+                        'success'=> true,
+                        'status'=> 200,
+                        'message'=> 'Field deactivate',
+                        'field_status'=> $getField->status
+                    ];
+                    return response()->json($response);
+                }else{
+                    $getField->status= 1;
+                    $getField->updated_by= Auth::user()->id;
+                    $update= $getField->save();
+                    $response= [
+                        'success'=> true,
+                        'status'=> 200,
+                        'message'=> 'Field activate',
+                        'field_status'=> $getField->status
+                    ];
+                    return response()->json($response);
+                }
+            }
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
+        }
+    }
+
+    public function deleteField($id){
+        try{
+            $getdata= CustomField::where('id',$id)->first();
+            if($getdata){
+                $delete= $getdata->delete();
+                $message= 'Field deleted successfully';
+                return redirect()->back()->with(Toastr::success($message));
+            }else{
+                $message= 'Error in delete field';
+                Toastr::error($message);
+
             }
         }catch(Exception $e){
             $message= $e->getMessage();

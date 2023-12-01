@@ -55,6 +55,24 @@
                 }
             ]
         });
+
+        $('#field-table').on('click','.status',function(){
+            let field_id= $(this).data();
+            let button= $(this);
+            $.ajax({
+                type: "GET",
+                url: "{{route('change-status')}}",
+                data:field_id,
+                success:function(data){
+                    if(data.field_status == 0){
+                        button.text('Activate');
+                    }else if (data.field_status == 1){
+                        button.text('Deactivate');
+                    }
+                    toastr.success(data.message);
+                }
+            });
+        });
     });
 </script>
 
