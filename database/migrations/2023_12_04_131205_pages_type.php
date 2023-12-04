@@ -11,22 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_field',function(Blueprint $table){
+        Schema::create('pages_type',function(Blueprint $table){
             $table->id();
             $table->string('page_type');
-            $table->string('key')->nullable();
-            $table->string('type');
-            $table->string('label');
-            $table->string('name');
-            $table->string('field_type')->default(0);
-            $table->string('default_value');
-            $table->integer('status')->comment('deactivate => 0, active=> 1')->default(1);
-            $table->string('parent_id')->define(0);
+            $table->integer('status')->comment('deactivate=> 0, activate=> 1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
         });
     }
 
@@ -35,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::drop('custom_field');
+        Schema::drop('pages_type');
     }
 };

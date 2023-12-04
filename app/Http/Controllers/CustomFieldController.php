@@ -23,22 +23,12 @@ class CustomFieldController extends Controller
     public function field_list(){
         try{
             $getFields= CustomField::with('fieldType')->get();
-           
             return DataTables::of($getFields)
             ->addIndexColumn()
             ->addColumn('id',function($data){
                 return $data->id;
             })
-            ->addColumn('label',function($data){
-                return $data->label;
-            })
-            ->addColumn('name',function($data){
-                return $data->name;
-            })
-            ->addColumn('field_key', function($data){
-                return $data->field_key;
-            })
-            ->addColumn('type',function($data){
+            ->addColumn('page_type',function($data){
                 return $data->fieldType->name;
             })
             ->addColumn('action',function($data){
@@ -60,15 +50,21 @@ class CustomFieldController extends Controller
         return view('admin.custom-field.add-field',['fieldType'=> $getFieldType]);
     }
 
+    public function listing_slider_option(){
+        $getPageType= CustomField::all();
+        return view('admin.layouts.slider',['pageType'=> $getPageType]);
+    }
+
     public function saveField(Request $request){
         try{
+
             $input= $request->all();
             $validation = validator::make($input,[
-                'group_name'=>'required',
-                'type'=> 'required',
-                'label'=>'required',
-                'name'=> 'required',
-                'default_value'=> 'required'
+                'page_type'=> 'required',
+                'data.*.field_type'=> 'required',
+                'data.*.label'=> 'required',
+                'data.*.name'=> 'required',
+                'data.*.default_value'=> 'required',
             ]);
 
             if($validation->fails()){
@@ -77,33 +73,26 @@ class CustomFieldController extends Controller
                     'status'=> 500,
                     'message'=> $validation->messages()->first()
                 ];
-
                 return response()->json($response);
             }
-            $groupKey= 'group_'.Str::random(7);
-            $fieldKey= 'fiels_'.Str::random(7);
+            $data= $input['data'];
+            foreach($data as $field){
+                $create= CustomField::create([
+                    'page_type'=> $input['page_type'],
+                    'field_type'=> $field['field_type'],
+                    'label'=> $field['label'],
+                    'name'=> $field['name'],
+                    'default_value'=> $field['default_value'],
+                ]);
+            }
+            if($create){
+                $create->parent_id= $create->id;
+                $create->created_by= Auth::user()->id;
+                $create->save();
     
-            $field= [
-                'group_name'=> $input['group_name'],
-                'group_key'=> $groupKey,
-                'field_key'=> $fieldKey,
-                'type'=> $input['type'],
-                'label'=> $input['label'],
-                'name'=> $input['name'],
-                'default_value'=> $input['default_value'],
-                'created_by'=> Auth::user()->id
-            ];
-
-            $createPage= CustomField::create($field);
-            if($createPage){  
                 $message= 'Field created successfully';  
-                $response=[
-                    'success'=> true,
-                    'status'=> 201,
-                    'message'=> $message
-                ];
-
-                return response()->json($response);
+                Toastr::success($message);
+                return redirect()->route('custom-field');
             }else{
                 $message= 'Error in page creation';
                 $response=[
@@ -138,8 +127,8 @@ class CustomFieldController extends Controller
         try{
             $input= $request->all();
             $validation = validator::make($input,[
-                'group_name'=>'required',
-                'type'=> 'required',
+                'page_type'=>'required',
+                'field_type'=> 'required',
                 'label'=>'required',
                 'name'=> 'required',
                 'default_value'=> 'required'
@@ -157,8 +146,8 @@ class CustomFieldController extends Controller
            
             $getField= CustomField::where('id',$input['id'])->first();
             if($getField){
-                $getField->group_name= $input['group_name'];
-                $getField->type= $input['type'];
+                $getField->page_type= $input['page_type'];
+                $getField->field_type= $input['field_type'];
                 $getField->label= $input['label'];
                 $getField->name= $input['name'];
                 $getField->default_value= $input['default_value'];
@@ -236,7 +225,6 @@ class CustomFieldController extends Controller
             }else{
                 $message= 'Error in delete field';
                 Toastr::error($message);
-
             }
         }catch(Exception $e){
             $message= $e->getMessage();

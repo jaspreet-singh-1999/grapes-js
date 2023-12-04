@@ -5,31 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\PostStatus;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CustomField extends Model
+class PageType extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $table= 'custom_field';
+    protected $table='pages_type';
     protected $fillable= [
         'id',
         'page_type',
-        'key',
-        'field_type',
-        'label',
-        'name',
-        'default_value',
         'status',
-        'parent_id',
         'created_by',
         'updated_by',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
-    public function fieldType(){
-        return $this->hasOne(FieldType::class,'id','field_type');
-    }
-    
 }

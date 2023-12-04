@@ -3,17 +3,14 @@
 
 <h3> Custom pages </h3>
 <div class="mb-2">
-    <a href="{{route('add-field')}}" class="btn btn-primary" id="add-new-page">Add New Page</a>
+    <a href="{{route('add-field')}}" class="btn btn-primary" id="add-new-page">Add New Type</a>
 </div>
 
 <table id='field-table'>
     <thead>
         <tr>
             <th>#</th>
-            <th>Label</th>
-            <th>Name</th>
-            <th>key</th>
-            <th>Type</th>
+            <th>Page Type</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -31,21 +28,10 @@
                     orderable: false,
                     searchable: false
                 },
+    
                 {
-                    data: 'label',
-                    name: 'label',
-                },
-                {
-                    data: 'name',
-                    name: 'name',
-                },
-                {
-                    data: 'field_key',
-                    name: 'field_key',
-                },
-                {
-                    data: 'type',
-                    name: 'type',
+                    data: 'page_type',
+                    name: 'page_type',
                 },
                 {
                     data: 'action',

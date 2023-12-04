@@ -3,7 +3,7 @@
 
 <h3> Edit Field Group</h3>
 <div class="col-md-2 col-sm-12 form-group">
-    <input type="text" class="form-control" id="group_name" name= "group_name" value="{{$data->group_name}}" placeholder="group name">
+    <input type="text" class="form-control" id="page_type" name= "page_type" value="{{$data->page_type}}" placeholder="group name">
 </div>
 <div class="mb-2">
     <a href="#" class="btn btn-primary" id="save">Save changes</a>
@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="Profession">Field Type:</label>
-                        <select name="type" id="field_type" class="form-control">
+                        <select name="field_type" id="field_type" class="form-control">
                             <option selected value="{{$data->type}}">{{$data->fieldType->name}}</option>
                             @foreach ($fieldType as $type)
                                 <option value="{{$type->id}}">{{$type->name}}</option>
@@ -67,20 +67,19 @@
         });
 
         $('#save').on('click', function(){
-            let group_name= $('#group_name').val();
-            let type= $('#field_type').val() ;
+            let page_type= $('#page_type').val();
+            let field_type= $('#field_type').val();
             let label= $('#lable_name').val();
             let name= $('#field_name').val();
             let default_value= $('#default_value').val();
-           
             $.ajax({
                 url: "{{route('update')}}",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data:{
                     id: {{$data->id}},
-                    group_name: group_name,
-                    type: type,
+                    page_type: page_type,
+                    field_type: field_type,
                     label: label,
                     name: name,
                     default_value: default_value
