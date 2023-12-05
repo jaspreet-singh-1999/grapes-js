@@ -54,7 +54,7 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('change-status',[CustomFieldController::class,'changeStatus'])->name('change-status');
     Route::get('delete-field/{id}',[CustomFieldController::class,'deleteField'])->name('delete');
 
-    Route::get('page_type',[CustomFieldController::class,'listing_slider_option']);
+    Route::get('add/{id}',[CustomFieldController::class,'showField'])->name('add');
 });
 
 // for public url

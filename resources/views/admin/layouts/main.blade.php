@@ -86,7 +86,7 @@
         
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             
-            @include('admin.layouts.slider')
+            @include('admin.layouts.sidebar')
         
         </aside>
         <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -97,7 +97,7 @@
                 {!! Toastr::message() !!} 
                 <div class="row">
 
-                    @yield('contant')
+                    @yield('content')
 
                 </div>
 

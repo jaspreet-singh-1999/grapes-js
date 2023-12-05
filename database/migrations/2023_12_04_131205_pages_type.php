@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pages_type',function(Blueprint $table){
             $table->id();
             $table->string('page_type');
-            $table->integer('status')->comment('deactivate=> 0, activate=> 1');
+            $table->integer('status')->comment('deactivate=> 0, activate=> 1')->default(1);
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();

@@ -1,56 +1,59 @@
 @extends('admin.layouts.main')
-@section('contant')
+@section('content')
 
-<h3> Edit Field Group</h3>
-<div class="col-md-2 col-sm-12 form-group">
-    <input type="text" class="form-control" id="page_type" name= "page_type" value="{{$data->page_type}}" placeholder="group name">
-</div>
-<div class="mb-2">
-    <a href="#" class="btn btn-primary" id="save">Save changes</a>
-</div>
-
-<form class="form repeater-default" id="form-submit">
-    <div data-repeater-list="group-a">
-        <h4>Fields</h4>
-        <div data-repeater-item>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="Profession">Field Type:</label>
-                        <select name="field_type" id="field_type" class="form-control">
-                            <option selected value="{{$data->type}}">{{$data->fieldType->name}}</option>
-                            @foreach ($fieldType as $type)
-                                <option value="{{$type->id}}">{{$type->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="lable_name">Field Label:</label>
-                        <input type="text" class="form-control" id="lable_name" name="label" value="{{$data->label}}" placeholder="Field label*">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="field_name">Field Name:</label>
-                        <input type="text" class="form-control" id="field_name" name="name" value="{{$data->name}}" placeholder="Field name*">
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="default_value">Default Value:</label>
-                        <input type="text" class="form-control" id="default_value" name="default_value"  value="{{$data->default_value}}" placeholder="Default Value*">
-                    </div>
-                </div>
-            </div>
-            <hr>
+<form class="form repeater-default" id="form-submit" method="post" action="{{route('update')}}">
+    @csrf
+    <div data-repeater-list="data">
+        <input name="pageType_id" type="hidden" value="{{$pageType->id}}">
+        <h3> Edit Type</h3>
+        <div class="col-md-2 col-sm-12 form-group">
+            <input type="text" class="form-control" id="page_type" name= "page_type" value="{{$pageType->page_type}}" placeholder="type name">
         </div>
+        <h4>Fields</h4>
+        @foreach($fields as $field)
+            <div data-repeater-item>
+                <input name="field_id" type="hidden" value="{{$field->id}}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Profession">Field Type:</label>
+                            <select name="field_type" id="field_type" class="form-control">
+                                @foreach ($fieldType as $type)
+                                    <option value="{{ $type->id }}" @if($type->id == $field->fieldType->id) selected @endif>{{ $type->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lable_name">Field Label:</label>
+                            <input type="text" class="form-control" id="lable_name" name="label" value="{{$field->label}}" placeholder="Field label*">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="field_name">Field Name:</label>
+                            <input type="text" class="form-control" id="field_name" name="name" value="{{$field->name}}" placeholder="Field name*">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="default_value">Default Value:</label>
+                            <input type="text" class="form-control" id="default_value" name="default_value"  value="{{$field->default_value}}" placeholder="Default Value*">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        @endforeach
+    </div>
+    <div class="mb-2">
+        <input type="submit" class="btn btn-primary" id="save">
     </div>
 </form>
 <script>
@@ -64,37 +67,6 @@
                 $(this).slideUp(deleteElement);
                 }
             }
-        });
-
-        $('#save').on('click', function(){
-            let page_type= $('#page_type').val();
-            let field_type= $('#field_type').val();
-            let label= $('#lable_name').val();
-            let name= $('#field_name').val();
-            let default_value= $('#default_value').val();
-            $.ajax({
-                url: "{{route('update')}}",
-                type: 'POST',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data:{
-                    id: {{$data->id}},
-                    page_type: page_type,
-                    field_type: field_type,
-                    label: label,
-                    name: name,
-                    default_value: default_value
-                },
-                success:function(data){
-                    if(data.success == true){
-                        toastr.success(data.message);
-                        setTimeout(() => {
-                            window.location.href= "{{route('custom-field')}}";
-                        }, 2000);
-                    }else{
-                        toastr.error(data.message);
-                    }
-                }
-            });
         });
     });
 </script>

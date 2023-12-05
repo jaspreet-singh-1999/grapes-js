@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\CustomField;
 
 class PageType extends Model
 {
@@ -20,4 +21,8 @@ class PageType extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public function field(){
+        return $this->belongsTo(CustomField::class,'id','page_id');
+    }
 }

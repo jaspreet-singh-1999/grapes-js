@@ -1,5 +1,5 @@
 @extends('admin.layouts.main')
-@section('contant')
+@section('content')
 
 
 <form class="form repeater-default" id="form-submit" method="post" action="{{route('save-field')}}">
@@ -84,7 +84,6 @@
                 }
             }
         });
-
     });
 </script>
 @endsection

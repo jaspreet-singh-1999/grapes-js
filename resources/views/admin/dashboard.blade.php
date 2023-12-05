@@ -1,4 +1,4 @@
 @extends('admin.layouts.main')
-@section('contant')
+@section('content')
 <h2> Admin Dashboard </h2>
 @endSection

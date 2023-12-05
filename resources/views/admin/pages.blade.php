@@ -1,5 +1,5 @@
 @extends('admin.layouts.main')
-@section('contant')
+@section('content')
 <h3> Pages list </h3>
 <div class="mb-2">
     <a href="" class="btn btn-primary" id="add-new-page">Add New Page</a>

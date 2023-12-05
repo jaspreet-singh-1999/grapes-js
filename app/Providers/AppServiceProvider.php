@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\PageType;
+use Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +20,11 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        //
+    {   
+        view()->composer('admin.layouts.sidebar', function ($view) {
+            $user= Auth::user();
+            $page= PageType::where('created_by',$user->id)->where('status','!=',0)->get();
+            $view->with(['pageTypes'=>$page]);
+        });
     }
 }

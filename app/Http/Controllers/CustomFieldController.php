@@ -6,10 +6,10 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\FieldType;
 use App\Models\CustomField;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
+use App\Models\PageType;
 use Auth;
 
 class CustomFieldController extends Controller
@@ -22,14 +22,14 @@ class CustomFieldController extends Controller
 
     public function field_list(){
         try{
-            $getFields= CustomField::with('fieldType')->get();
+            $getFields= PageType::all();
             return DataTables::of($getFields)
             ->addIndexColumn()
             ->addColumn('id',function($data){
                 return $data->id;
             })
             ->addColumn('page_type',function($data){
-                return $data->fieldType->name;
+                return $data->page_type;
             })
             ->addColumn('action',function($data){
                 return '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary status">Deactivate</a>'.' '.
@@ -50,11 +50,6 @@ class CustomFieldController extends Controller
         return view('admin.custom-field.add-field',['fieldType'=> $getFieldType]);
     }
 
-    public function listing_slider_option(){
-        $getPageType= CustomField::all();
-        return view('admin.layouts.slider',['pageType'=> $getPageType]);
-    }
-
     public function saveField(Request $request){
         try{
 
@@ -68,25 +63,30 @@ class CustomFieldController extends Controller
             ]);
 
             if($validation->fails()){
-                $response= [
-                    'success'=> false,
-                    'status'=> 500,
-                    'message'=> $validation->messages()->first()
-                ];
-                return response()->json($response);
+                $message= $validation->messages()->first();
+                return redirect()->back()->with(Toastr::error($message));
             }
+
+            $checkPageTypeExists= PageType::where('page_type',$input['page_type'])->exists();
+            if($checkPageTypeExists){
+                $message= 'Page type already exists';
+                return redirect()->back()->with(Toastr::error($message));
+            }
+
+            $pageType= ['page_type'=> $input['page_type']];
+            $create= PageType::create($pageType);
+            
             $data= $input['data'];
             foreach($data as $field){
-                $create= CustomField::create([
-                    'page_type'=> $input['page_type'],
+                $createField= CustomField::create([
+                    'page_id'=> $create->id,
                     'field_type'=> $field['field_type'],
                     'label'=> $field['label'],
                     'name'=> $field['name'],
                     'default_value'=> $field['default_value'],
                 ]);
             }
-            if($create){
-                $create->parent_id= $create->id;
+            if($createField){
                 $create->created_by= Auth::user()->id;
                 $create->save();
     
@@ -111,10 +111,11 @@ class CustomFieldController extends Controller
 
     public function editField($id){
         try{
-            $getdata= CustomField::with('fieldType')->where('id',$id)->first();
+            $getPageType= PageType::where('id',$id)->first();
+            $getField= CustomField::with('fieldType')->where('page_id',$getPageType->id)->get();
             $getFieldType= FieldType::all();
-            if($getdata){
-                return view('admin.custom-field.edit-field',['data'=> $getdata,'fieldType'=> $getFieldType]);
+            if($getField){
+                return view('admin.custom-field.edit-field',['pageType'=>$getPageType,'fields'=> $getField,'fieldType'=> $getFieldType]);
             }
         }catch(Exception $e){
             $message= $e->getMessage();
@@ -124,14 +125,14 @@ class CustomFieldController extends Controller
     }
 
     public function updateField(Request $request){
-        try{
+        try{    
             $input= $request->all();
-            $validation = validator::make($input,[
-                'page_type'=>'required',
-                'field_type'=> 'required',
-                'label'=>'required',
-                'name'=> 'required',
-                'default_value'=> 'required'
+            $validation = Validator::make($input,[
+                'page_type'=> 'required',
+                'data.*.field_type'=> 'required',
+                'data.*.label'=> 'required',
+                'data.*.name'=> 'required',
+                'data.*.default_value'=> 'required'
             ]);
 
             if($validation->fails()){
@@ -143,35 +144,68 @@ class CustomFieldController extends Controller
 
                 return response()->json($response);
             }
-           
-            $getField= CustomField::where('id',$input['id'])->first();
-            if($getField){
-                $getField->page_type= $input['page_type'];
-                $getField->field_type= $input['field_type'];
-                $getField->label= $input['label'];
-                $getField->name= $input['name'];
-                $getField->default_value= $input['default_value'];
-                $getField->updated_by= Auth::user()->id;
-                $save= $getField->Save();
-            }
-           
-            if($save){  
-                $message= 'Field update successfully';  
-                $response=[
-                    'success'=> true,
-                    'status'=> 201,
-                    'message'=> $message
-                ];
-
-                return response()->json($response);
+            $getPageType= PageType::where('id',$input['pageType_id'])->first();
+            if($getPageType){
+                $getPageType->page_type= $input['page_type'];
+                $getPageType->updated_by= Auth::user()->id;
+                $update= $getPageType->save();
+                if($update){
+                    $fieldData= $input['data'];
+                    foreach($fieldData as $data){
+                        $field= CustomField::where('id',$data['field_id'])->first();
+                        $field->page_id= $getPageType->id;
+                        $field->field_type= $data['field_type'];
+                        $field->label= $data['label'];
+                        $field->name= $data['name'];
+                        $field->default_value= $data['default_value'];
+                        $field->updated_by= Auth::user()->id;
+                        $update= $field->save();
+                    }
+                    if($update){
+                        $message= 'Page type & Field update successfully';
+                        Toastr::success($message);
+                        return redirect()->route('custom-field');
+                        
+                    }else{
+                        $message= 'Error in update page type & field';
+                        return redirect()->back()->with(Toastr::error($message));
+                    }
+                }else{
+                    $message= 'Error in update page type';
+                    Toastr::error($message);
+                }
+            
             }else{
-                $message= 'Error in page update';
-                $response=[
-                    'success'=> false,
-                    'status'=> 500,
-                    'message'=>  $message
-                ];
-                return response()->json($response);
+                $message= 'Page type not found';
+                Toastr::error($message);
+            }
+            
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
+        }
+    }
+
+    public function deleteField($id){
+        try{
+            $getdata= PageType::where('id',$id)->where('created_by',Auth::user()->id)->first();
+            if($getdata){
+                $getdata->field()->delete();
+                $getdata->delete();
+                $getdata->updated_by= Auth::user()->id;
+                $delete= $getdata->Save();
+                if($delete){
+                    $message= 'Page & Field deleted successfully';
+                    return redirect()->route('custom-field');
+                }else{
+                    $message= 'Erro in deleted Page & Field';
+                    return redirect()->back()->with(Toastr::error($message));
+                }
+                
+            }else{
+                $message= 'Page not found';
+                return redirect()->back()->with(Toastr::error($message));
             }
         }catch(Exception $e){
             $message= $e->getMessage();
@@ -179,10 +213,10 @@ class CustomFieldController extends Controller
             return response()->json($response);
         }
     }
-    
+
     public function changeStatus(Request $request){
         try{
-            $getField= CustomField::where('id',$request->id)->first();
+            $getField= PageType::where('id',$request->id)->first();
             if($getField){
                 if($getField->status == 1){
                     $getField->status=0;
@@ -191,7 +225,7 @@ class CustomFieldController extends Controller
                     $response= [
                         'success'=> true,
                         'status'=> 200,
-                        'message'=> 'Field deactivate',
+                        'message'=> 'Page deactivate',
                         'field_status'=> $getField->status
                     ];
                     return response()->json($response);
@@ -202,7 +236,7 @@ class CustomFieldController extends Controller
                     $response= [
                         'success'=> true,
                         'status'=> 200,
-                        'message'=> 'Field activate',
+                        'message'=> 'Page activate',
                         'field_status'=> $getField->status
                     ];
                     return response()->json($response);
@@ -215,21 +249,24 @@ class CustomFieldController extends Controller
         }
     }
 
-    public function deleteField($id){
+    public function showField($id){
         try{
-            $getdata= CustomField::where('id',$id)->first();
-            if($getdata){
-                $delete= $getdata->delete();
-                $message= 'Field deleted successfully';
-                return redirect()->back()->with(Toastr::success($message));
+            $user= Auth::user();
+            $getPageType= PageType::with('field')->where('id',$id)->where('created_by',$user->id)->first();
+            if($getPageType){
+                $getField= CustomField::where('page_id',$getPageType->id)->get();
+                if($getField){
+                    return view('admin.custom-field.page-with-field',['page'=> $getPageType,'fields'=>$getField]);
+                }else{
+                    $message= 'fields not found';
+                    return redirect()->back()->with(Toastr::error($message));
+                }
             }else{
-                $message= 'Error in delete field';
-                Toastr::error($message);
+                $message= 'Page not found';
+                return redirect()->back()->with(Toastr::error($message));
             }
         }catch(Exception $e){
-            $message= $e->getMessage();
-            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
-            return response()->json($response);
+            dd($e->getMessage());
         }
     }
 }

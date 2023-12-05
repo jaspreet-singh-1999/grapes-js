@@ -1,5 +1,5 @@
 @extends('admin.layouts.main')
-@section('contant')
+@section('content')
 
 <h3> Custom pages </h3>
 <div class="mb-2">
