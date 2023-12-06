@@ -5,7 +5,7 @@
 <form class="form repeater-default" id="form-submit" method="post" action="{{route('save-field')}}">
     @csrf  
     <div data-repeater-list="data">
-        <h3> Type name</h3>
+        <h3> Page Type name</h3>
         <div class="col-md-2 col-sm-12 form-group">
             <input type="text" class="form-control"  name= "page_type" placeholder="type name">
         </div>
@@ -36,7 +36,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="field_name">Field Name:</label>
-                        <input type="text" class="form-control" name= "name" placeholder="Field name*">
+                        <input type="text" class="form-control" id="field_name" name= "name" placeholder="Field name*">
                     </div>
                 </div>
 
@@ -84,6 +84,13 @@
                 }
             }
         });
+
+        $('.repeater-default').on('keyup', '#lable_name', function(){
+            let labelname = $(this).val().toLowerCase();
+            let name = labelname.replace(' ','_');
+            $(this).closest('[data-repeater-item]').find('#field_name').val(name);
+        });
+
     });
 </script>
 @endsection

@@ -52,7 +52,7 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('edit-field/{id}',[CustomFieldController::class,'editField'])->name('edit');
     Route::post('update-field',[CustomFieldController::class,'updateField'])->name('update');
     Route::get('change-status',[CustomFieldController::class,'changeStatus'])->name('change-status');
-    Route::get('delete-field/{id}',[CustomFieldController::class,'deleteField'])->name('delete');
+    Route::get('delete/{id}',[CustomFieldController::class,'deletePage'])->name('delete');
 
     Route::get('add/{id}',[CustomFieldController::class,'showField'])->name('add');
 });

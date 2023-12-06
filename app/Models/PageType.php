@@ -23,6 +23,6 @@ class PageType extends Model
     ];
 
     public function field(){
-        return $this->belongsTo(CustomField::class,'id','page_id');
+        return $this->hasMany(CustomField::class,'page_id','id');
     }
 }

@@ -31,6 +31,6 @@ class CustomField extends Model
         return $this->hasOne(FieldType::class,'id','field_type');
     }
     public function pageType(){
-        return $this->hasOne(PageType::class,'id','page_id');
+        return $this->belongsTo(PageType::class,'page_id','id');
     }
 }

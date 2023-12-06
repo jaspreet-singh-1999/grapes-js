@@ -1,7 +1,7 @@
 @extends('admin.layouts.main')
 @section('content')
 
-<h3> Custom pages </h3>
+<h3> Pages type </h3>
 <div class="mb-2">
     <a href="{{route('add-field')}}" class="btn btn-primary" id="add-new-page">Add New Type</a>
 </div>

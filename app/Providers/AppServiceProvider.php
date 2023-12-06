@@ -23,8 +23,13 @@ class AppServiceProvider extends ServiceProvider
     {   
         view()->composer('admin.layouts.sidebar', function ($view) {
             $user= Auth::user();
-            $page= PageType::where('created_by',$user->id)->where('status','!=',0)->get();
-            $view->with(['pageTypes'=>$page]);
+            if($user){
+                $page= PageType::where('created_by',$user->id)->where('status','!=',0)->get();
+                $view->with(['pageTypes'=>$page]);
+            }else{
+                $page= [];
+                $view->with(['pageTypes'=>$page]);
+            }
         });
     }
 }

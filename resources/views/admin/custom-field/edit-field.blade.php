@@ -12,12 +12,13 @@
         <h4>Fields</h4>
         @foreach($fields as $field)
             <div data-repeater-item>
-                <input name="field_id" type="hidden" value="{{$field->id}}">
+                <input name="field_id" type="hidden" id="field_id_{{$field->id}}" value="{{$field->id}}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Profession">Field Type:</label>
                             <select name="field_type" id="field_type" class="form-control">
+                                <option selected value="">Select type</option>
                                 @foreach ($fieldType as $type)
                                     <option value="{{ $type->id }}" @if($type->id == $field->fieldType->id) selected @endif>{{ $type->name }}</option>
                                 @endforeach
@@ -47,10 +48,26 @@
                             <input type="text" class="form-control" id="default_value" name="default_value"  value="{{$field->default_value}}" placeholder="Default Value*">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group d-flex align-items-center pt-2">
+                                <button class="btn btn-danger" id="delete" data-id="{{$field->id}}" data-repeater-delete type="button"> <i class="bx bx-x"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <hr>
             </div>
         @endforeach
+    </div>
+    <div class="form-group">
+        <div class="col p-0">
+            <button class="btn btn-primary" id="add" data-repeater-create type="button"><i class="bx bx-plus"></i>
+               + Add field
+            </button>
+        </div>
     </div>
     <div class="mb-2">
         <input type="submit" class="btn btn-primary" id="save">
@@ -63,10 +80,11 @@
                 $(this).slideDown();
             },
             hide: function (deleteElement) {
-                if (confirm('Are you sure you want to delete this element?')) {
-                $(this).slideUp(deleteElement);
+                let id= $(this).find(['input name="field_id"']).val();
+                if(confirm('Are you sure you want to delete this element?')) {
+                    $(this).slideUp(deleteElement);
                 }
-            }
+            }    
         });
     });
 </script>
