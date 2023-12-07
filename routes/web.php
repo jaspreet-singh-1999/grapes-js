@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WedPageController;
 use App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\Admin\PageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ Route::get('login',[AuthController::class,'loginPage'])->name('login');
 Route::post('user-login',[AuthController::class,'user_login'])->name('user-login');
 
 Route::middleware(['web','auth-user'])->group(function () {
-
+    // wed page route
     Route::get('home-page',[WedPageController::class,'admin_home'])->name('admin-home');
     Route::get('pages-list',[WedPageController::class, 'pagesList'])->name('pages-list'); 
     Route::get('pages-list-data',[WedPageController::class, 'pagesListData'])->name('pages-list-data'); 
@@ -34,9 +36,7 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('edit-page',[WedPageController::class,'edit_page'])->name('edit-page');
     Route::post('update-page',[WedPageController::class,'page_update'])->name('page-update');
     Route::get('delete-page/{id}',[WedPageController::class,'delete_page'])->name('delete-page');
-    
-    // Route::get('page-data',[WedPageController::class,'get_page_data'])->name('get-page-data');    
-    // Route::get('web-editor/{id}',[WedPageController::class,'webBuilder'])->name('web-builder'); 
+
     
     Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');
     Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
@@ -44,7 +44,7 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
     
-    // custome route
+    // custome page tyep and field route
     Route::get('custom-field',[CustomFieldController::class,'custom_field'])->name('custom-field');
     Route::get('custom-list',[CustomFieldController::class,'field_list'])->name('field_list');
     Route::get('add-field',[CustomFieldController::class,'add_field'])->name('add-field');
@@ -53,9 +53,13 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::post('update-field',[CustomFieldController::class,'updateField'])->name('update');
     Route::get('change-status',[CustomFieldController::class,'changeStatus'])->name('change-status');
     Route::get('delete/{id}',[CustomFieldController::class,'deletePage'])->name('delete');
-
     Route::get('add/{id}',[CustomFieldController::class,'showField'])->name('add');
+
+    Route::prefix('fieldData')->group(function(){
+        Route::get('/add',[PageController::class,'save_field_data'])->name('field-data');
+    });
 });
 
-// for public url
+// for public use url
 Route::get('/{page_slug}', [AuthController::class,'page_using_slug'])->name('page-slug');
+

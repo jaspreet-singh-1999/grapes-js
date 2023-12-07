@@ -20,6 +20,7 @@ class CustomFieldController extends Controller
         return view('admin.custom-field.custom-page');
     }
 
+    // Listing All type of pages 
     public function field_list(){
         try{
             $getFields= PageType::all();
@@ -45,11 +46,13 @@ class CustomFieldController extends Controller
         }
     }
 
+    // View Add field blade with Field type 
     public function add_field(){
         $getFieldType= FieldType::all();
         return view('admin.custom-field.add-field',['fieldType'=> $getFieldType]);
     }
 
+    // Save Page type & fields 
     public function saveField(Request $request){
         try{
 
@@ -108,6 +111,7 @@ class CustomFieldController extends Controller
         }
     }
 
+    // Edit Page type & there fields
     public function editField($id){
         try{
             $getPageType= PageType::where('id',$id)->first();
@@ -126,6 +130,7 @@ class CustomFieldController extends Controller
         }
     }
 
+    // Update Page type and there fields
     public function updateField(Request $request){
         try{    
             $input= $request->all();
@@ -199,6 +204,7 @@ class CustomFieldController extends Controller
         }
     }
 
+    // Delete Page type with there all fields
     public function deletePage($id){
         try{
             $getdata= PageType::where('id',$id)->where('created_by',Auth::user()->id)->first();
@@ -226,6 +232,7 @@ class CustomFieldController extends Controller
         }
     }
 
+    // Change Page type status active/deactive
     public function changeStatus(Request $request){
         try{
             $getField= PageType::where('id',$request->id)->first();
@@ -261,6 +268,7 @@ class CustomFieldController extends Controller
         }
     }
 
+    // Show assign field to Page Base on clicked page  
     public function showField($id){
         try{
             $user= Auth::user();
@@ -268,7 +276,7 @@ class CustomFieldController extends Controller
             if($getPageType){
                 $getField= CustomField::with('fieldType')->where('page_id',$getPageType->id)->get();
                 if($getField){
-                    return view('admin.custom-field.page-with-field',['page'=> $getPageType,'fields'=>$getField]);
+                    return view('admin.pages.page',['page'=> $getPageType,'fields'=>$getField]);
                 }else{
                     $message= 'fields not found';
                     return redirect()->back()->with(Toastr::error($message));
@@ -281,5 +289,4 @@ class CustomFieldController extends Controller
             dd($e->getMessage());
         }
     }
-
 }

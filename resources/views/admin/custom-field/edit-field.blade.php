@@ -80,7 +80,6 @@
                 $(this).slideDown();
             },
             hide: function (deleteElement) {
-                let id= $(this).find(['input name="field_id"']).val();
                 if(confirm('Are you sure you want to delete this element?')) {
                     $(this).slideUp(deleteElement);
                 }
