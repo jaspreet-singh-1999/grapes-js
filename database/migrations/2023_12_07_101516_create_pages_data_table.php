@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('pages_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('page_id');
-            $table->json('field_data');
-            $table->integer('created_by');
+            $table->json('field_data')->nullable();
+            $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->foreign('page_id')->references('id')->on('pages_type')->cascadeOnDelete();
             $table->timestamps();

@@ -12,7 +12,7 @@ class PageData extends Model
     protected $fillable= [
         'id',
         'page_id',
-        'fiels_data',
+        'field_data',
         'created_by',
         'updated_by',
         'created_at',

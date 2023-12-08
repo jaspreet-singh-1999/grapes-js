@@ -106,8 +106,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
-            return response()->json($response);
+           
         }
     }
 
@@ -125,8 +124,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
-            return response()->json($response);
+            
         }
     }
 
@@ -199,8 +197,7 @@ class CustomFieldController extends Controller
             
         }catch(Exception $e){
             $message= $e->getMessage();
-            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
-            return response()->json($response);
+           
         }
     }
 
@@ -227,8 +224,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
-            return response()->json($response);
+           
         }
     }
 
@@ -263,8 +259,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
-            return response()->json($response);
+            
         }
     }
 
@@ -286,7 +281,7 @@ class CustomFieldController extends Controller
                 return redirect()->back()->with(Toastr::error($message));
             }
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
         }
     }
 }
