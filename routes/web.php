@@ -56,9 +56,11 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('add/{id}',[CustomFieldController::class,'showField'])->name('add');
 
     Route::prefix('fieldData')->group(function(){
-        Route::get('list/{id}',[PageController::class,'listing'])->name('listing');
+        Route::get('list/{id}',[PageController::class,'listing'])->name('list');
         Route::post('/add',[PageController::class,'save_field_data'])->name('save-field-data');
-        Route::get('/edit/{id}',[PageController::class,'edit'])->name('listing');
+        Route::get('/edit',[PageController::class,'edit'])->name('edit');
+        Route::post('/update',[PageController::class,'updateData'])->name('update-field-data');
+        Route::get('/delete',[PageController::class,'deleteData'])->name('delete-field-data');
     });
 });
 
