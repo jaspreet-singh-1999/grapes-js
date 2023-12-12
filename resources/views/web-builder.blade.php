@@ -70,8 +70,28 @@
                 },
                 storageManager: {  autoload: false },
     
-            });  
-            //set html css 
+            });
+
+            editor.DomComponents.addType('Page-type', {
+                model: {
+                    defaults: {
+                        tagName: 'select',
+                        components: `
+                            <option selected value="">Select Page type</option>
+                            <option value="1">Cars</option>
+                            <option value="2">Building</option>
+                            <option value="3">Company</option>
+                        `,
+                    },
+                },
+            });
+
+            const customSelectComponent = editor.DomComponents.addComponent({
+                type: 'Page-type',
+            });
+            editor.getEditor().append(customSelectComponent);
+
+            //Set web-page html & css 
             editor.setComponents(html);
             editor.setStyle(css);
 

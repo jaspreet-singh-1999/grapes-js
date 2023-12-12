@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WedPageController;
 use App\Http\Controllers\CustomFieldController;
-use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\PageFieldController;
+
 
 
 /*
@@ -45,22 +46,23 @@ Route::middleware(['web','auth-user'])->group(function () {
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
     
     // custome page tyep and field route
-    Route::get('custom-field',[CustomFieldController::class,'custom_field'])->name('custom-field');
+    Route::get('custom-field',[CustomFieldController::class,'custom_field_page'])->name('custom-field');
     Route::get('custom-list',[CustomFieldController::class,'field_list'])->name('field_list');
     Route::get('add-field',[CustomFieldController::class,'add_field'])->name('add-field');
     Route::post('save-field',[CustomFieldController::class,'saveField'])->name('save-field');
-    Route::get('edit-field/{id}',[CustomFieldController::class,'editField'])->name('edit');
+    Route::get('edit-field/{id}',[CustomFieldController::class,'editField'])->name('edit-pageType-field');
     Route::post('update-field',[CustomFieldController::class,'updateField'])->name('update');
     Route::get('change-status',[CustomFieldController::class,'changeStatus'])->name('change-status');
     Route::get('delete/{id}',[CustomFieldController::class,'deletePage'])->name('delete');
     Route::get('add/{id}',[CustomFieldController::class,'showField'])->name('add');
 
+    // field
     Route::prefix('fieldData')->group(function(){
-        Route::get('list/{id}',[PageController::class,'listing'])->name('list');
-        Route::post('/add',[PageController::class,'save_field_data'])->name('save-field-data');
-        Route::get('/edit',[PageController::class,'edit'])->name('edit');
-        Route::post('/update',[PageController::class,'updateData'])->name('update-field-data');
-        Route::get('/delete',[PageController::class,'deleteData'])->name('delete-field-data');
+        Route::get('list/{id}',[PageFieldController::class,'listing'])->name('list');
+        Route::post('/add',[PageFieldController::class,'save_field_data'])->name('save-field-data');
+        Route::get('/edit',[PageFieldController::class,'edit'])->name('edit');
+        Route::post('/update',[PageFieldController::class,'updateData'])->name('update-field-data');
+        Route::get('/delete',[PageFieldController::class,'deleteData'])->name('delete-field-data');
     });
 });
 

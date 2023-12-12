@@ -78,6 +78,10 @@
                 margin-right: 37px;
                 margin-top: -44px;
             }
+            a#template {
+                float: right;
+                margin-top: -49px;
+            }
  
         </style>
     </head>

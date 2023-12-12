@@ -15,7 +15,7 @@ use Auth;
 class CustomFieldController extends Controller
 {
    
-    public function custom_field(){
+    public function custom_field_page(){
 
         return view('admin.custom-field.custom-page');
     }
@@ -34,7 +34,7 @@ class CustomFieldController extends Controller
             })
             ->addColumn('action',function($data){
                 return '<a href="#" data-id="'.$data->id.'" class= "btn btn-xs btn-primary status">Deactivate</a>'.' '.
-                '<a href="'.route('edit',$data->id).'" class= "btn btn-xs btn-primary ">Edit</a>'.' '.
+                '<a href="'.route('edit-pageType-field',$data->id).'" class= "btn btn-xs btn-primary ">Edit</a>'.' '.
                 '<a href="'.route('delete',$data->id).'" class= "btn btn-xs btn-primary ">Delete</a>';
             })
             ->rawColumns(['action'])
@@ -97,22 +97,18 @@ class CustomFieldController extends Controller
                 return redirect()->route('custom-field');
             }else{
                 $message= 'Error in page creation';
-                $response=[
-                    'success'=> false,
-                    'status'=> 500,
-                    'message'=>  $message
-                ];
-                return response()->json($response);
+                return redirect()->back()->with( Toastr::error($message));
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-           
+            Toastr::error($message);
         }
     }
 
     // Edit Page type & there fields
     public function editField($id){
         try{
+        
             $getPageType= PageType::where('id',$id)->first();
             $getField= CustomField::with('fieldType')->where('page_id',$getPageType->id)->get();
             $getFieldType= FieldType::all();
@@ -124,7 +120,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            
+            Toastr::error($message);
         }
     }
 
@@ -140,13 +136,8 @@ class CustomFieldController extends Controller
             ]);
 
             if($validation->fails()){
-                $response= [
-                    'success'=> false,
-                    'status'=> 500,
-                    'message'=> $validation->messages()->first()
-                ];
-
-                return response()->json($response);
+                $message= $validation->messages()->first();
+                return redirect()->back()->with(Toastr::error($message));
             }
             $getPageType= PageType::where('id',$input['pageType_id'])->first();
             if($getPageType){
@@ -197,7 +188,7 @@ class CustomFieldController extends Controller
             
         }catch(Exception $e){
             $message= $e->getMessage();
-           
+            Toastr::error($message);
         }
     }
 
@@ -224,7 +215,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-           
+            Toastr::error($message);
         }
     }
 
@@ -259,7 +250,12 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            
+            $response= [
+                'success'=> false,
+                'status'=> 500,
+                'message'=>  $message,
+            ];
+            return response()->json($response);
         }
     }
 
@@ -282,6 +278,7 @@ class CustomFieldController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
+            Toastr::error($message);
         }
     }
 }

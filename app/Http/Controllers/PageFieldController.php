@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,14 +11,14 @@ use Auth;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
-
-class PageController extends Controller
+class PageFieldController extends Controller
 {
+    // Listing page content 
     public function listing($id){
 
         try{
-            $user= Auth::user();
 
+            $user= Auth::user();
             $getfieldData= PageData::where('page_id',$id)->where('created_by',$user->id)->get();
             $get=[];
             foreach($getfieldData as $fieldData){
@@ -38,10 +38,12 @@ class PageController extends Controller
             ->rawColumns(['action'])
             ->make(true);
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            Toastr::error($message);
         }
     }
 
+    // Save page fields data 
     public function save_field_data(Request $request){
         try{
     
@@ -57,8 +59,7 @@ class PageController extends Controller
 
             unset($input['_token']);
             $page_id= $input['page_id'];
-          
-            
+        
             if($request->hasFile('image')){
                 $file= $request->image;
                 $fileName= time().'-'.$file->getClientOriginalName();
@@ -83,10 +84,11 @@ class PageController extends Controller
 
         }catch(Exception $e){
             $message= $e->getMessage();
-            dd($message);
+            Toastr::error($message);
         }
     }
 
+    // Edit page field data
     public function edit(Request $request){
         try{
     
@@ -108,6 +110,7 @@ class PageController extends Controller
         }
     }
 
+    // Update page field data
     public function updateData(Request $request){
         try{
     
@@ -136,12 +139,12 @@ class PageController extends Controller
                     $input['image']= $filePath;
                 }
 
-                $filedData= [
+                $fieldData= [
                     'field_data'=> json_encode($input),
                     'updated_by'=> $user->id
                 ];
     
-                $update= $getFieldData->update($filedData);
+                $update= $getFieldData->update($fieldData);
                 if($update){
                     $message="Record update successfully";
                     return redirect()->back()->with(Toastr::success($message));
@@ -156,11 +159,11 @@ class PageController extends Controller
 
         }catch(Exception $e){
             $message= $e->getMessage();
-            dd($message);
             Toastr::error($message);
         }
     }
 
+    // Delete page field data
     public function deleteData(Request $request){
         try{
             $user= Auth::user();
@@ -191,3 +194,4 @@ class PageController extends Controller
         }
     }
 }
+

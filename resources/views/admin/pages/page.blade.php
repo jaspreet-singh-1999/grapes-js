@@ -4,7 +4,10 @@
     <div class="mb-2">
         <a href="#" class="btn btn-primary" id="add">Add New {{$page->page_type}}</a>
     </div>
-    {{-- save --}}
+    <div class="mb-2">
+        <a href="#" class="btn btn-primary template" id="template">Template</a>
+    </div>
+    {{-- save modal--}}
     <div class="modal fade" id="pageModal" tabindex="-1" role="dialog" aria-labelledby="pageModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -30,7 +33,7 @@
             </div>
         </div>
     </div>
-    {{-- update --}}
+    {{-- update modal--}}
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="pageModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

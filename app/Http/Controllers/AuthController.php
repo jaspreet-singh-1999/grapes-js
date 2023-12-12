@@ -36,7 +36,7 @@ class AuthController extends Controller
             }   
         }catch(Exception $e){
             $message= $e->getMessage();
-            dd($message);
+            Toastr::error($message);
         }
     }
     
@@ -80,8 +80,7 @@ class AuthController extends Controller
             }
         }catch(Exception $e){
             $message= $e->getMessage();
-            dd($message);
-            return redirect()->back();
+            Toastr::error($message);
         }
     }
 }
