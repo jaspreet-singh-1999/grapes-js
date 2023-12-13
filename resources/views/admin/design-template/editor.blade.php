@@ -50,48 +50,59 @@
         <div id="gjs"></div>
         <button id="saveButton" class=''>Save</button>
         <script>
-            let html = `{!!html_entity_decode($html)!!}`;
-            let css = `{{$css}}`;
- 
+
             // Initialize GrapesJS
-            let editor = grapesjs.init({
+            var editor = grapesjs.init({
                 container: '#gjs',
                 components: '',
                 width: 'auto',
-                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','custom-plugin','dropdownOptionPlugin'],
+                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code'],
                 pluginsOpts:{
-                    'grapesjs-preset-webpage': {},
-                    'gjs-blocks-basic': {},
-                    'grapesjs-plugin-forms': {},
-                    'grapesjs-component-countdown':{},
-                    'grapesjs-tabs': {},
-                    'grapesjs-tooltip': {},
-                    'grapesjs-typed': {},
-                    'grapesjs-custom-code': {}
+                'grapesjs-preset-webpage': {},
+                'gjs-blocks-basic': {},
+                'grapesjs-plugin-forms': {},
+                'grapesjs-component-countdown':{},
+                'grapesjs-tabs': {},
+                'grapesjs-tooltip': {},
+                'grapesjs-typed': {},
+                'grapesjs-custom-code': {}
                 },
                 storageManager: {  autoload: false },
-    
+
             });
 
-            //Set web-page html & css 
-            editor.setComponents(html);
-            editor.setStyle(css);
+            editor.DomComponents.addType('Page-type', {
+                model: {
+                    defaults: {
+                        tagName: 'select',
+                        components: `
+                            <option id="select"selected value="">Select Page type</option>
+                            @foreach($pageTypes as $type)
+                                <option value="{{$type->id}}">{{$type->page_type}}</option>
+                            @endforeach
+                        `,
+                    },
+                },
+            });
 
+            editor.DomComponents.addComponent({ type: 'Page-type'});
+           
             $('#saveButton').on('click',function(e){
-                let html= editor.getHtml()
+                let html= editor.getHtml() 
                 let css= editor.getCss()
+                let pageType_id= $('#select').val()
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('save-page-data') }}",
+                    url: "{{ route('save_tempate_data') }}",
                     type: "POST",
                     data: {
-                        id: {{$id}},
+                        pageType_id: pageType_id,
                         html:html,
                         css:css
                     },
                     success: function(response) {
                         if(response.success == true){
-                            window.location.href= "{{route('pages-list')}}"
+
                             toastr.success(response.message)
                         }else{
                             toastr.error(response.message)
@@ -102,7 +113,6 @@
                     }
                 });
             });
-
         </script>
     </body>
 </html>

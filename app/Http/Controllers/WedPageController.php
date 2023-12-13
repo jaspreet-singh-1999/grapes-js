@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PageType;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\WebPage;
@@ -271,40 +272,6 @@ class WedPageController extends Controller
             dd($e->getMessage());
         }
     }
-
-    // public function get_page_data(Request $request){
-    //     try{
-    //         $getPageData= WebPage::where('id',$request->id)->first();
-    //         if($getPageData){
-    //             $pageData= [
-    //                 'html'=> json_decode($getPageData['page_html']),
-    //                 'css'=> json_decode($getPageData['page_css'])
-    //             ];
-    //             $response= [
-    //                 'success'=> true,
-    //                 'status'=> 200,
-    //                 'page'=> $pageData,
-    //                 'message'=> 'Page found'
-    //             ];
-    //             return response()->json($response);
-    //         }else{
-    //             $response= [
-    //                 'success'=> true,
-    //                 'status'=> 200,
-    //                 'message'=> 'Page data not found'
-    //             ];
-    //             return response()->json($response);
-    //         }
-    //     }catch(Exception $e){
-    //         $message= $e->getMessage();
-    //         $response= [
-    //             'success'=> true,
-    //             'status'=> 200,
-    //             'message'=> 'Page data not found'
-    //         ];
-    //         return response()->json($response);
-    //     }
-    // }
 
     // This function save the editor data
     public function save_page_data(Request $request){

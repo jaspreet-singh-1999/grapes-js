@@ -1,6 +1,6 @@
 @extends('admin.layouts.main')
 @section('content')
-    <h3> Pages list </h3>
+    <h3> Web pages list </h3>
     <div class="mb-2">
         <a href="" class="btn btn-primary" id="add-new-page">Add New Page</a>
     </div>
@@ -57,7 +57,7 @@
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="pageModalLabel">Add page</h5>
+            <h5 class="modal-title" id="pageModalLabel">Edit web page</h5>
             </div>
         
             <div class="modal-body">
