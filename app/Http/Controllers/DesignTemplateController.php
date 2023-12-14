@@ -6,28 +6,47 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\PageType;
 use App\Models\DesignedTemplates;
+use Brian2694\Toastr\Facades\Toastr;
 use Auth;
 
 class DesignTemplateController extends Controller
 {
-    public function designTemplate(){
+
+    public function selectPageType(){
         $getPageType= PageType::where('status','!=',0)->get();
-        return view('admin.design-template.editor',['pageTypes'=> $getPageType]);
+        return view('admin.design-template.select-page-type',['pageTypes'=> $getPageType]);
+    }
+
+    public function edit_template(Request $request){
+        $page_type_id= $request->page_type_id;
+        if(!empty($page_type_id)){
+            $response= ['success'=> true, 'status'=> 200, 'page_type_id'=>$page_type_id];
+            return response()->json( $response);
+        }else{
+            $response= ['success'=> false, 'status'=> 422, 'message'=>'page type not selected'];
+            return response()->json( $response);
+        }
+    }
+
+    public function editor($id){
+        return view('admin.design-template.editor',['page_type_id'=> $id]);
     }
 
     Public function save_tempate_data(Request $request){
         try{
+          
             $user= Auth::user();
             $input= $request->all();
            
             $html= json_encode($input['html']);
             $css= json_encode($input['css']);
             $templateData=[
-                'page_id'=> $input['pageType_id'],
+                'page_id'=> $input['page_type_id'],
                 'html'=> $html,
                 'css'=> $css,
                 'created_by'=> $user->id
             ];
+          
             $create= DesignedTemplates::create($templateData);
             if($create){
                 $response= [

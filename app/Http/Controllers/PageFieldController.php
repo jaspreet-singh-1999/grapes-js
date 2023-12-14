@@ -99,7 +99,7 @@ class PageFieldController extends Controller
                 $respose= ['success'=> true, 'status'=> 200, 'fieldData'=> $fieldData,'filedData_id'=> $getFieldData->id];
                 return response()->json($respose);
             }else{
-                $respose= ['success'=> false, 'status'=> 500, 'message'=> 'Data not found'];
+                $respose= ['success'=> false, 'status'=> 404, 'message'=> 'Data not found'];
                 return response()->json($respose);
             }
             
@@ -180,7 +180,7 @@ class PageFieldController extends Controller
                     return response()->json($respose);
                 }
             }else{
-                $respose= ['success'=> false, 'status'=> 500, 'message'=> 'Record not found'];
+                $respose= ['success'=> false, 'status'=> 404, 'message'=> 'Record not found'];
                 return response()->json($respose);
             }
         }catch(Exception $e){

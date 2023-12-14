@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\PostStatus;
 use Illuminate\Support\Facades\Hash;
+use Brian2694\Toastr\Facades\Toastr;
 
 class WedPageController extends Controller
 {
@@ -55,7 +56,8 @@ class WedPageController extends Controller
             }
             return view('admin.pages');
         }catch(Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            Toastr::error($message);
         }
     }
 
@@ -105,7 +107,7 @@ class WedPageController extends Controller
                 $message= 'Page created successfully';  
                 $response=[
                     'success'=> true,
-                    'status'=> 201,
+                    'status'=> 200,
                     'message'=> $message
                 ];
 
@@ -141,13 +143,13 @@ class WedPageController extends Controller
                 ];
                 $response= [
                     'success'=> true, 
-                    'status'=> 201, 
+                    'status'=> 200, 
                     'pageDetails'=>$data,
                     'message'=> 'Page found'
                 ];
                 return response()->json($response);
             }else{
-                $response= ['success'=> true, 'status'=> 500, 'message'=> 'Page not found'];    
+                $response= ['success'=> true, 'status'=> 404, 'message'=> 'Page not found'];    
             }
         }catch(Exception $e){
             $message= $e->getMessage();
@@ -169,7 +171,7 @@ class WedPageController extends Controller
             if($validation->failed()){
                 $response= [
                     'success'=> true,
-                    'status'=> 201,
+                    'status'=> 200,
                     'message'=> $validation->messages()
                 ];
                 return response()->json($response);
@@ -201,7 +203,7 @@ class WedPageController extends Controller
             if($update){    
                 $response=[
                     'success'=> true,
-                    'status'=> 201,
+                    'status'=> 200,
                     'message'=> 'Page update successfully'
                 ];
                 return response()->json($response);
@@ -229,7 +231,7 @@ class WedPageController extends Controller
                 if($delete){
                     $response=[
                         'success'=> true,
-                        'status'=> 201,
+                        'status'=> 200,
                         'message'=> 'page delete successfully'
                     ];
                     return redirect()->route('pages-list');
@@ -244,7 +246,7 @@ class WedPageController extends Controller
             }else{
                 $response=[
                     'success'=> false,
-                    'status'=> 500,
+                    'status'=> 404,
                     'message'=> 'Page not found'
                 ];
                 return response()->json($response);
@@ -289,7 +291,7 @@ class WedPageController extends Controller
                 if($save){
                     $response= [
                         'success'=> true, 
-                        'status'=> 201, 
+                        'status'=> 200, 
                         'message'=> 'Page data save successfully'
                     ];
                     return response()->json($response);
@@ -341,7 +343,7 @@ class WedPageController extends Controller
             }else{
                 $response= [
                     'success'=> false,
-                    'status'=> 500,
+                    'status'=> 404,
                     'message'=> 'Page not found',
                 ];
                 return response()->json($response);

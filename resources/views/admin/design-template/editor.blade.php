@@ -67,45 +67,29 @@
                 'grapesjs-typed': {},
                 'grapesjs-custom-code': {}
                 },
-                storageManager: {  autoload: false },
+                storageManager: {  autoload: true },
 
             });
 
-            editor.DomComponents.addType('Page-type', {
-                model: {
-                    defaults: {
-                        tagName: 'select',
-                        components: `
-                            <option id="select"selected value="">Select Page type</option>
-                            @foreach($pageTypes as $type)
-                                <option value="{{$type->id}}">{{$type->page_type}}</option>
-                            @endforeach
-                        `,
-                    },
-                },
-            });
-
-            editor.DomComponents.addComponent({ type: 'Page-type'});
-           
             $('#saveButton').on('click',function(e){
-                let html= editor.getHtml() 
-                let css= editor.getCss()
-                let pageType_id= $('#select').val()
+                let html= editor.getHtml();
+                let css= editor.getCss();
+                console.log(html,css);
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     url: "{{ route('save_tempate_data') }}",
                     type: "POST",
                     data: {
-                        pageType_id: pageType_id,
+                        page_type_id:"{{$page_type_id}}",
                         html:html,
                         css:css
                     },
                     success: function(response) {
                         if(response.success == true){
-
-                            toastr.success(response.message)
+                            console.log(response.message);
+                           
                         }else{
-                            toastr.error(response.message)
+                            console.log(response.message);
                         }
                     },
                     error: function(error) {
