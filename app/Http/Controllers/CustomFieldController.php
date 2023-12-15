@@ -17,7 +17,7 @@ class CustomFieldController extends Controller
    
     public function custom_field_page(){
 
-        return view('admin.custom-field.custom-page');
+        return view('admin.custom-page-field.custom-page');
     }
 
     // Listing All type of pages 
@@ -49,7 +49,7 @@ class CustomFieldController extends Controller
     // View Add field blade with Field type 
     public function add_field(){
         $getFieldType= FieldType::all();
-        return view('admin.custom-field.add-field',['fieldType'=> $getFieldType]);
+        return view('admin.custom-page-field.add-field',['fieldType'=> $getFieldType]);
     }
 
     // Save Page type & fields 
@@ -113,7 +113,7 @@ class CustomFieldController extends Controller
             $getField= CustomField::with('fieldType')->where('page_id',$getPageType->id)->get();
             $getFieldType= FieldType::all();
             if(isset($getField)){
-                return view('admin.custom-field.edit-field',['pageType'=>$getPageType,'fields'=> $getField,'fieldType'=> $getFieldType]);
+                return view('admin.custom-page-field.edit-field',['pageType'=>$getPageType,'fields'=> $getField,'fieldType'=> $getFieldType]);
             }else{
                 $message= 'Data not found';
                 return redirect()->back()->with(Toastr::error($message));

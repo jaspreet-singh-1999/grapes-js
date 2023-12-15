@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\CustomField;
+use App\Models\DesignedTemplates;
 
 class PageType extends Model
 {
@@ -24,5 +25,9 @@ class PageType extends Model
 
     public function field(){
         return $this->hasMany(CustomField::class,'page_id','id');
+    }
+
+    public function pageTemplate(){
+        return $this->hasOne(DesignedTemplates::class, 'page_id','id');
     }
 }

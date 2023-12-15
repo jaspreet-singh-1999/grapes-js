@@ -78,9 +78,9 @@
                 margin-right: 37px;
                 margin-top: -44px;
             }
-            a#template {
+            a#assign_template {
                 float: right;
-                margin-top: -49px;
+                margin-top: -48px;
             }
  
         </style>
@@ -104,7 +104,8 @@
                     @yield('content')
 
                 </div>
-
+                @include('admin.pages.assign-template')
+                
                 @include('admin.layouts.footer')
 
             </div>

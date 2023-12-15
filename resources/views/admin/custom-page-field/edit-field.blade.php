@@ -85,6 +85,12 @@
                 }
             }    
         });
+
+        $('.repeater-default').on('keyup','#lable_name',function(){
+            let labelname = $(this).val().toLowerCase();
+            let name= labelname.replace(/ /g,'_');
+            $(this).closest('[data-repeater-item]').find('#field_name').val(name);
+        });
     });
 </script>
 @endsection

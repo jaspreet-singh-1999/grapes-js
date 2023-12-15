@@ -6,7 +6,7 @@
         <div data-repeater-list="data">
             <h3> Page Type name</h3>
             <div class="col-md-2 col-sm-12 form-group">
-                <input type="text" class="form-control"  name= "page_type" placeholder="type name">
+                <input type="text" class="form-control"  name= "page_type" placeholder="Name">
             </div>
             <h4>Fields</h4>
             <div data-repeater-item>
@@ -86,7 +86,7 @@
 
             $('.repeater-default').on('keyup', '#lable_name', function(){
                 let labelname = $(this).val().toLowerCase();
-                let name = labelname.replace(' ','_');
+                let name = labelname.replace(/ /g,'_');
                 $(this).closest('[data-repeater-item]').find('#field_name').val(name);
             });
 

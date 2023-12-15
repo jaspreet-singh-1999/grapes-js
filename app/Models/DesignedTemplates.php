@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\PageType;
 
 class DesignedTemplates extends Model
 {
@@ -22,4 +23,8 @@ class DesignedTemplates extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public function page(){
+        return $this->belongsTo(PageType::class,'page_id','id');
+    }
 }

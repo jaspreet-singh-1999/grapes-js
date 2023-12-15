@@ -30,21 +30,26 @@ Route::post('user-login',[AuthController::class,'user_login'])->name('user-login
 
 
 Route::middleware(['web','auth-user'])->group(function () {
-    // wed page route
-    Route::get('home-page',[WedPageController::class,'admin_home'])->name('admin-home');
-    Route::get('web-pages-list',[WedPageController::class, 'pagesList'])->name('pages-list'); 
-    Route::get('web-pages-list-data',[WedPageController::class, 'pagesListData'])->name('pages-list-data'); 
-    Route::post('save-page',[WedPageController::class,'save_page'])->name('save-page');
-    Route::get('edit-page',[WedPageController::class,'edit_page'])->name('edit-page');
-    Route::post('update-page',[WedPageController::class,'page_update'])->name('page-update');
-    Route::get('delete-page/{id}',[WedPageController::class,'delete_page'])->name('delete-page');
 
-    // wed page editor route
-    Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');
-    Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
-    Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
-    Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+    Route::prefix('web-page')->group(function(){
+        // wed page route
+        Route::get('home-page',[WedPageController::class,'admin_home'])->name('admin-home');
+        Route::get('web-pages-list',[WedPageController::class, 'pagesList'])->name('pages-list'); 
+        Route::get('web-pages-list-data',[WedPageController::class, 'pagesListData'])->name('pages-list-data'); 
+        Route::post('save-page',[WedPageController::class,'save_page'])->name('save-page');
+        Route::get('edit-page',[WedPageController::class,'edit_page'])->name('edit-page');
+        Route::post('update-page',[WedPageController::class,'page_update'])->name('page-update');
+        Route::get('delete-page/{id}',[WedPageController::class,'delete_page'])->name('delete-page');
     
+        // wed page editor route
+        Route::get('editor/{id}',[WedPageController::class,'pageEdit'])->name('editor');
+        Route::post('save-page-data',[WedPageController::class,'save_page_data'])->name('save-page-data');
+        Route::get('publish-page',[WedPageController::class,'publish_page'])->name('publish-page');
+        Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+    
+    });
+    
+   
     // custome page type and field route
     Route::get('custom-field',[CustomFieldController::class,'custom_field_page'])->name('custom-field');
     Route::get('custom-list',[CustomFieldController::class,'field_list'])->name('field_list');
@@ -59,12 +64,13 @@ Route::middleware(['web','auth-user'])->group(function () {
     // page fields data 
     Route::prefix('fieldData')->group(function(){
         Route::get('list/{id}',[PageFieldController::class,'listing'])->name('list');
-        Route::post('/add',[PageFieldController::class,'save_field_data'])->name('save-field-data');
-        Route::get('/edit',[PageFieldController::class,'edit'])->name('edit');
-        Route::post('/update',[PageFieldController::class,'updateData'])->name('update-field-data');
-        Route::get('/delete',[PageFieldController::class,'deleteData'])->name('delete-field-data');
+        Route::post('add',[PageFieldController::class,'save_field_data'])->name('save-field-data');
+        Route::get('edit',[PageFieldController::class,'edit'])->name('edit');
+        Route::post('update',[PageFieldController::class,'updateData'])->name('update-field-data');
+        Route::get('delete',[PageFieldController::class,'deleteData'])->name('delete-field-data');
     });
 
+    // Design template for page type route
     Route::prefix('template')->group(function(){
         Route::get('select-page-type',[DesignTemplateController::class,'selectPageType'])->name('select-page-type');
         Route::get('edit',[DesignTemplateController::class,'edit_template'])->name('edit-template');

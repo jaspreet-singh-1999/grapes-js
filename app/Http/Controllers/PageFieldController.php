@@ -116,7 +116,6 @@ class PageFieldController extends Controller
     
             $user= Auth::user();
             $input= $request->all();
-            
             $validation= Validator::make($input,[
                 '*'=> 'required'
             ]);
@@ -130,8 +129,8 @@ class PageFieldController extends Controller
             $getFieldData= PageData::where('id',$input['fieldData_id'])->where('created_by',$user->id)->first();
             
             if($getFieldData){
+                $fieldData= json_decode($getFieldData->field_data,true);
                 if($request->hasFile('image')){
-                    $fieldData= json_decode($getFieldData->field_data,true);
                     Storage::delete($fieldData['image']);
                     $file= $request->image;
                     $fileName= time().'-'.$file->getClientOriginalName();
@@ -159,6 +158,7 @@ class PageFieldController extends Controller
 
         }catch(Exception $e){
             $message= $e->getMessage();
+           
             Toastr::error($message);
         }
     }

@@ -5,7 +5,7 @@
         <a href="#" class="btn btn-primary" id="add">Add New {{$page->page_type}}</a>
     </div>
     <div class="mb-2">
-        <a href="#" class="btn btn-primary template" id="template">Template</a>
+        <a href="#" class="btn btn-primary template" id="assign_template">Assign Template</a>
     </div>
     {{-- save modal--}}
     <div class="modal fade" id="pageModal" tabindex="-1" role="dialog" aria-labelledby="pageModalLabel" aria-hidden="true">
@@ -47,7 +47,7 @@
                         @foreach($fields as $field)
                             <div class="form-group">
                                 <label for="{{$field->name}}" class="col-form-label">{{$field->label}}</label>
-                                <input type="{{$field->fieldType->name}}" name="{{$field->name}}" class="form-control" id="edit_{{$field->name}}" value="">
+                                <input type="{{$field->fieldType->name}}" name="{{$field->name}}" class="form-control" id="edit_{{$field->name}}" value="" required>
                             </div>
                         @endforeach
                         <div class="modal-footer">
@@ -153,6 +153,14 @@
                     }
                 }   
             })
+        });
+
+        $('#assign_template').click(function(){
+            $('#assignTemplate').modal('show');
+        });
+
+        $('#closeModal').click(function(){
+            $('#assignTemplate').modal('hide');
         });
     });
   </script>

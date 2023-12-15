@@ -7,7 +7,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Select Page</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Select page type</h5>
         </div>
         <div class="modal-body">
           {{-- <div class="form-group">
@@ -18,7 +18,7 @@
           <div class="form-group">
             <div class="dropdown page-status">
               <select class="form-select" type="text" name="status_id" id="select_PageType_id" required>
-                <option selected value="">Select Page status</option>
+                <option selected value="">Select Page</option>
                 @foreach($pageTypes as $types)
                   <option value="{{$types->id}}">{{$types->page_type}}</option>
                 @endforeach
@@ -53,6 +53,8 @@
               let newURL = "{{ route('template-editor', ['id' => ':id']) }}";
               newURL = newURL.replace(':id', response.page_type_id);
               window.location.href= newURL;
+            }else{
+              toastr.error(response.message);
             }
           }
         });

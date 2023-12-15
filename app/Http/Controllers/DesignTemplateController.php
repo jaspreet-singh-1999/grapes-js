@@ -23,7 +23,7 @@ class DesignTemplateController extends Controller
             $response= ['success'=> true, 'status'=> 200, 'page_type_id'=>$page_type_id];
             return response()->json( $response);
         }else{
-            $response= ['success'=> false, 'status'=> 422, 'message'=>'page type not selected'];
+            $response= ['success'=> false, 'status'=> 422, 'message'=>'Please select page type '];
             return response()->json( $response);
         }
     }
@@ -70,7 +70,7 @@ class DesignTemplateController extends Controller
             $response= ['success'=> false, 'status'=> 500, 'message'=> $message];
             return response()->json($response);
         }
-        
     }
 
+    
 }

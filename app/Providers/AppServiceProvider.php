@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\PageType;
+use App\Models\DesignedTemplates;
 use Auth;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,13 +24,18 @@ class AppServiceProvider extends ServiceProvider
     {   
         view()->composer('admin.layouts.sidebar', function ($view) {
             $user= Auth::user();
+            $page= [];
             if($user){
                 $page= PageType::where('created_by',$user->id)->where('status','!=',0)->get();
-                $view->with(['pageTypes'=>$page]);
-            }else{
-                $page= [];
-                $view->with(['pageTypes'=>$page]);
             }
+            $view->with(['pageTypes'=>$page]);
+           
+        });
+
+        view()->composer('admin.pages.assign-template', function ($view) {
+            $pageTemplate= DesignedTemplates::with("page")->get();
+            $view->with(['pageTemplate' => $pageTemplate->isNotEmpty() ? $pageTemplate : []]);
+           
         });
     }
 }
