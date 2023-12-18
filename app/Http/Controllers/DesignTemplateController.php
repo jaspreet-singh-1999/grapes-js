@@ -72,5 +72,26 @@ class DesignTemplateController extends Controller
         }
     }
 
-    
+    public function showSelectOption(){
+        try{
+            $getPageType= PageType::get();
+            if($getPageType->isNotEmpty()){
+                $response= ['success'=> true, 'status'=> 200, 'options'=> $getPageType];
+                return response()->json($response);
+            }else{
+                $response= ['success'=> true, 'status'=> 404, 'message'=> 'Page type not found'];
+                return response()->json($response);
+            }
+            
+        }catch(Exception $e){
+            $message= $e->getMessage();
+            $response= ['success'=>false, 'status'=> 500, 'message'=> $message];
+            return response()->json($response);
+        }
+    }
+
+    public function show_editor(){
+        $getPageType= PageType::get();
+        return view('admin.design-template.editor',['option'=>$getPageType]);
+    }
 }

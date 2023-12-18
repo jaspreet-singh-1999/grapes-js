@@ -76,6 +76,10 @@ Route::middleware(['web','auth-user'])->group(function () {
         Route::get('edit',[DesignTemplateController::class,'edit_template'])->name('edit-template');
         Route::get('template-editor/{id}',[DesignTemplateController::class,'editor'])->name('template-editor');
         Route::post('save',[DesignTemplateController::class,'save_tempate_data'])->name('save_tempate_data');
+
+        Route::get('select-option',[DesignTemplateController::class,'showSelectOption'])->name('show-select-option');
+    
+        Route::get('show-editor',[DesignTemplateController::class,'show_editor'])->name('show-editor');
     });
 
 });

@@ -43,6 +43,10 @@
         {{-- include grapesjs-custom-code plugin library --}}
         <script src="https://cdn.jsdelivr.net/npm/grapesjs-custom-code@1.0.2/dist/index.min.js
         "></script>
+
+        {{-- include grapesjs-blocks-flexbox library --}}
+        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-blocks-flexbox@1.0.1/dist/index.min.js"></script>
+        
      
     </head>
     <body>
@@ -50,37 +54,54 @@
         <div id="gjs"></div>
         <button id="saveButton" class=''>Save</button>
         <script>
+            let editorOptions= @json($option);
 
             // Initialize GrapesJS
             var editor = grapesjs.init({
                 container: '#gjs',
                 components: '',
                 width: 'auto',
-                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code'],
+                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','grapesjs-blocks-flexbox','myPlugin'],
                 pluginsOpts:{
-                'grapesjs-preset-webpage': {},
-                'gjs-blocks-basic': {},
-                'grapesjs-plugin-forms': {},
-                'grapesjs-component-countdown':{},
-                'grapesjs-tabs': {},
-                'grapesjs-tooltip': {},
-                'grapesjs-typed': {},
-                'grapesjs-custom-code': {}
+                    'grapesjs-preset-webpage': {},
+                    'gjs-blocks-basic': {},
+                    'grapesjs-plugin-forms': {},
+                    'grapesjs-component-countdown':{},
+                    'grapesjs-tabs': {},
+                    'grapesjs-tooltip': {},
+                    'grapesjs-typed': {},
+                    'grapesjs-custom-code': {},
+                    'grapesjs-blocks-flexbox':{}
                 },
                 storageManager: {  autoload: true },
 
             });
 
+            function myPlugin(editor) {
+                editor.Blocks.add('block', {
+                    label: 'Select Page type',
+                    content: {
+                        type: 'Select',
+                        content: `
+                            <select name="page_type" id="select-option" class="form-control">
+                                <option selected value="">Select type</option>
+                                ${editorOptions.map(option => `<option value="${option.id}">${option.page_type}</option>`)}
+                            </select>
+                        `,
+                    },
+                });
+            }
+
             $('#saveButton').on('click',function(e){
                 let html= editor.getHtml();
                 let css= editor.getCss();
-                console.log(html,css);
+                let id= $('#sel_post_type_').val();
+                console.log(id);
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     url: "{{ route('save_tempate_data') }}",
                     type: "POST",
                     data: {
-                        page_type_id:"{{$page_type_id}}",
                         html:html,
                         css:css
                     },

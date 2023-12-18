@@ -14,6 +14,7 @@ class PageData extends Model
         'id',
         'page_id',
         'field_data',
+        'template_id',
         'created_by',
         'updated_by',
         'created_at',

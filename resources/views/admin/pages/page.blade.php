@@ -5,7 +5,7 @@
         <a href="#" class="btn btn-primary" id="add">Add New {{$page->page_type}}</a>
     </div>
     <div class="mb-2">
-        <a href="#" class="btn btn-primary template" id="assign_template">Assign Template</a>
+        <a href="{{route('show-editor')}}" class="btn btn-primary template" id="assign_template">Assign Template</a>
     </div>
     {{-- save modal--}}
     <div class="modal fade" id="pageModal" tabindex="-1" role="dialog" aria-labelledby="pageModalLabel" aria-hidden="true">
