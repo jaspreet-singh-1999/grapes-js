@@ -44,9 +44,17 @@
         <script src="https://cdn.jsdelivr.net/npm/grapesjs-custom-code@1.0.2/dist/index.min.js
         "></script>
 
-        {{-- include grapesjs-blocks-flexbox library --}}
-        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-blocks-flexbox@1.0.1/dist/index.min.js"></script>
-        
+        {{-- include grapesjs-toolbox plugin library --}}
+        <link href=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.css " rel="stylesheet">
+       
+        <script src="
+        https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.js
+        "></script>
+
+        {{-- include grapesjs-ckeditor plugin library --}}
+        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-ckeditor@1.0.1/dist/index.min.js
+        "></script>
+
      
     </head>
     <body>
@@ -61,7 +69,7 @@
                 container: '#gjs',
                 components: '',
                 width: 'auto',
-                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','grapesjs-blocks-flexbox','myPlugin'],
+                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','grapesjs-plugin-toolbox','myPlugin','grapesjs-plugin-ckeditor'],
                 pluginsOpts:{
                     'grapesjs-preset-webpage': {},
                     'gjs-blocks-basic': {},
@@ -71,12 +79,14 @@
                     'grapesjs-tooltip': {},
                     'grapesjs-typed': {},
                     'grapesjs-custom-code': {},
-                    'grapesjs-blocks-flexbox':{}
+                    'grapesjs-blocks-flexbox':{},
+                    'grapesjs-plugin-toolbox':{},
                 },
+
                 storageManager: {  autoload: true },
 
             });
-
+            
             function myPlugin(editor) {
                 editor.Blocks.add('block', {
                     label: 'Select Page type',

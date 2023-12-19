@@ -1,4 +1,4 @@
-@extends('admin.layouts.main')
+{{-- @extends('admin.layouts.main')
 @section('content')
 <div class="mb-2">
   <a href="#" class="btn btn-primary" id="select_Page_type">Select page type</a>
@@ -10,10 +10,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Select page type</h5>
         </div>
         <div class="modal-body">
-          {{-- <div class="form-group">
-            <label for="message-text" class="col-form-label">Description</label>
-            <input type="text" class="form-control" name="description" id="description" value=""></textarea>
-          </div> --}}
+        
 
           <div class="form-group">
             <div class="dropdown page-status">
@@ -61,4 +58,4 @@
       });
     });
   </script>
-@endSection
+@endSection --}}
