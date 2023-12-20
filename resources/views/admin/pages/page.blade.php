@@ -155,13 +155,13 @@
             })
         });
 
-        $('#assign_template').click(function(){
-            $('#assignTemplate').modal('show');
-        });
+        // $('#assign_template').click(function(){
+        //     $('#assignTemplate').modal('show');
+        // });
 
-        $('#closeModal').click(function(){
-            $('#assignTemplate').modal('hide');
-        });
+        // $('#closeModal').click(function(){
+        //     $('#assignTemplate').modal('hide');
+        // });
     });
   </script>
 @endSection

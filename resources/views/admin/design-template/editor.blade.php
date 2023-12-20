@@ -54,7 +54,6 @@
         {{-- include grapesjs-ckeditor plugin library --}}
         <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-ckeditor@1.0.1/dist/index.min.js
         "></script>
-
      
     </head>
     <body>
@@ -65,9 +64,8 @@
             let editorOptions= @json($option);
 
             // Initialize GrapesJS
-            var editor = grapesjs.init({
+            let editor = grapesjs.init({
                 container: '#gjs',
-                components: '',
                 width: 'auto',
                 plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','grapesjs-plugin-toolbox','myPlugin','grapesjs-plugin-ckeditor'],
                 pluginsOpts:{
@@ -84,9 +82,36 @@
                 },
 
                 storageManager: {  autoload: true },
-
             });
-            
+
+        
+            editor.DomComponents.addType('input', {
+                isComponent: el => el.classList.contains('gjs-block-label') == 'Grid',
+                model: {
+                    defaults: {
+                        traits: [
+                    
+                            {
+                                type: 'text',
+                                label: 'Recent Post',
+                                name: 'recentPost',
+                            },
+                            {
+                                type: 'select',
+                                label: 'Category',
+                                name: 'category',
+                                options: [
+                                    { id: 'news', name: 'News' },
+                                    { id: 'technology', name: 'Technology' },
+                                    
+                                ],
+                            },
+                        ],
+                        attributes: { type: 'text', required: true },
+                    },
+                },
+            });
+
             function myPlugin(editor) {
                 editor.Blocks.add('block', {
                     label: 'Select Page type',

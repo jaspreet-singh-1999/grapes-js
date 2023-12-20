@@ -81,7 +81,6 @@ Route::middleware(['web','auth-user'])->group(function () {
     
         Route::get('show-editor',[DesignTemplateController::class,'show_editor'])->name('show-editor');
     });
-
 });
 
 // for public use url
