@@ -47,9 +47,8 @@
         {{-- include grapesjs-toolbox plugin library --}}
         <link href=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.css " rel="stylesheet">
        
-        <script src="
-        https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.js
-        "></script>
+        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.js"></script>
+    
 
         {{-- include grapesjs-ckeditor plugin library --}}
         <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-ckeditor@1.0.1/dist/index.min.js
@@ -83,34 +82,99 @@
 
                 storageManager: {  autoload: true },
             });
+           
 
-        
-            editor.DomComponents.addType('input', {
-                isComponent: el => el.classList.contains('gjs-block-label') == 'Grid',
-                model: {
-                    defaults: {
-                        traits: [
-                    
-                            {
-                                type: 'text',
-                                label: 'Recent Post',
-                                name: 'recentPost',
-                            },
-                            {
-                                type: 'select',
-                                label: 'Category',
-                                name: 'category',
-                                options: [
-                                    { id: 'news', name: 'News' },
-                                    { id: 'technology', name: 'Technology' },
-                                    
-                                ],
-                            },
-                        ],
-                        attributes: { type: 'text', required: true },
-                    },
-                },
+            editor.on('component:selected', (component) => {
+                let getType = component.get('type');
+                if(getType == 'css-grid'){
+                    const traitOptions = [
+                        {
+                            type: 'number',
+                            label: 'Recent',
+                            name: 'recent',
+                            placeholder: 'Recent post'
+                        },
+                        {
+                            type: 'select',
+                            label: 'Category',
+                            name: 'category',
+                            options:[
+                                { id: 'select', name: 'select', value: '1'},
+                                { id: 'demo1', name: 'demoCateg1', value: '1'},
+                                { id: 'demo1', name: 'demoCateg2', value: '2'},
+                                { id: 'demo1', name: 'demoCateg3', value: '3'},
+                            ]
+                        },
+                        {
+                            type: 'select',
+                            label: 'PageType',
+                            name: 'pageType',
+                            options:[
+                                { id: 'select', name: 'select', value: '1'},
+                                { id: 'cars', name: 'cars', value: '1'},
+                                { id: 'blog', name: 'blog', value: '2'},
+                                { id: 'news', name: 'news', value: '3'},
+                            ]
+                        }
+                    ];
+                    const existingTrait = component.getTraits().find(trait => trait.get('name') === traitOptions.name);
+                    if (!existingTrait) {
+                        component.addTrait(traitOptions);
+                        // console.log(`Trait added to the component: ${traitOptions.label}`);
+                    } else {
+                        // console.log('Trait already exists for this component.');
+                    }
+                }
             });
+
+            // editor.DomComponents.addType('css-grid', {
+            //     isComponent: el => el.type == 'css-grid',
+            //     model: {
+            //         defaults: {
+            //             traits: [
+                           
+            //                 {
+            //                     type: 'select', 
+            //                     label: 'category', 
+            //                     name: 'category', 
+            //                     options: [
+            //                         { id: 'select', name: 'select'},
+            //                         { id: 'cars', name: 'Cars'},
+            //                         { id: 'blog', name: 'blog'},
+            //                         { id: 'news', name: 'news'},
+            //                         { id: 'company', name: 'company'},
+            //                     ]
+            //                 }, 
+            //                 {
+            //                     type: 'number', 
+            //                     label: 'Recent', 
+            //                     name: 'recent',
+            //                     placeholder: 'Recent post' 
+            //                 }, 
+            //                 {
+            //                     type: 'select',
+            //                     label: 'PageType', 
+            //                     name: 'pageType', 
+            //                     options: [
+            //                         { id: "select", name: 'select', value: '0'},
+            //                         { id: "demo1", name: 'DemoType1', value: '1'},
+            //                         { id: "demo2", name: 'DemoType2', value: '2'},
+            //                         { id: "demo3", name: 'DemoType3', value: '3'},
+            //                         { id: "demo4", name: 'DemoType4', value: '4'},
+            //                     ]
+            //                 },
+            //                 {
+            //                     type: 'number', 
+            //                     label: 'row', 
+            //                     name: 'row'
+                        
+            //                 }, 
+            //             ],
+                    
+            //             attributes: { type: 'text', required: true },
+            //         },
+            //     },
+            // });
 
             function myPlugin(editor) {
                 editor.Blocks.add('block', {
