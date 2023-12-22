@@ -58,7 +58,7 @@
     <body>
         <!-- GrapesJS Editor Container -->
         <div id="gjs"></div>
-        <button id="saveButton" class=''>Save</button>
+        <button id="load" class=''>Load </button>
         <script>
             let editorOptions= @json($option);
 
@@ -81,8 +81,7 @@
                 },
 
                 storageManager: {  autoload: true },
-            });
-           
+            });   
 
             editor.on('component:selected', (component) => {
                 let getType = component.get('type');
@@ -90,12 +89,15 @@
                     const traitOptions = [
                         {
                             type: 'number',
+                            id: 'recent',
                             label: 'Recent',
                             name: 'recent',
-                            placeholder: 'Recent post'
+                            placeholder: 'Recent post',
+                            value:''
                         },
                         {
                             type: 'select',
+                            id: 'seleted-category',
                             label: 'Category',
                             name: 'category',
                             options:[
@@ -107,6 +109,7 @@
                         },
                         {
                             type: 'select',
+                            id: 'pageType',
                             label: 'PageType',
                             name: 'pageType',
                             options:[
@@ -118,105 +121,64 @@
                         }
                     ];
                     const existingTrait = component.getTraits().find(trait => trait.get('name') === traitOptions.name);
-                    if (!existingTrait) {
+                    if(!existingTrait) {
                         component.addTrait(traitOptions);
                         // console.log(`Trait added to the component: ${traitOptions.label}`);
-                    } else {
+                    }else{
                         // console.log('Trait already exists for this component.');
                     }
                 }
             });
 
-            // editor.DomComponents.addType('css-grid', {
-            //     isComponent: el => el.type == 'css-grid',
-            //     model: {
-            //         defaults: {
-            //             traits: [
-                           
-            //                 {
-            //                     type: 'select', 
-            //                     label: 'category', 
-            //                     name: 'category', 
-            //                     options: [
-            //                         { id: 'select', name: 'select'},
-            //                         { id: 'cars', name: 'Cars'},
-            //                         { id: 'blog', name: 'blog'},
-            //                         { id: 'news', name: 'news'},
-            //                         { id: 'company', name: 'company'},
-            //                     ]
-            //                 }, 
-            //                 {
-            //                     type: 'number', 
-            //                     label: 'Recent', 
-            //                     name: 'recent',
-            //                     placeholder: 'Recent post' 
-            //                 }, 
-            //                 {
-            //                     type: 'select',
-            //                     label: 'PageType', 
-            //                     name: 'pageType', 
-            //                     options: [
-            //                         { id: "select", name: 'select', value: '0'},
-            //                         { id: "demo1", name: 'DemoType1', value: '1'},
-            //                         { id: "demo2", name: 'DemoType2', value: '2'},
-            //                         { id: "demo3", name: 'DemoType3', value: '3'},
-            //                         { id: "demo4", name: 'DemoType4', value: '4'},
-            //                     ]
-            //                 },
-            //                 {
-            //                     type: 'number', 
-            //                     label: 'row', 
-            //                     name: 'row'
-                        
-            //                 }, 
-            //             ],
-                    
-            //             attributes: { type: 'text', required: true },
-            //         },
-            //     },
-            // });
+            function getGridSettingsFromEditor() {
+                const selectedComponent = editor.getSelected();
+                // Check if a component is selected
+                if (selectedComponent) {
+                    const columnCount = selectedComponent.getTraitValue('column-count');
+                    console.log(columnCount);
+                    const rowCount = selectedComponent.getTraitValue('row-count');
+                    const columnSpace = selectedComponent.getTraitValue('column-space');
+                    const rowSpace = selectedComponent.getTraitValue('row-space');
+                    const recentPosts = selectedComponent.getTraitValue('recent');
+                    const selectedPageType = selectedComponent.getTraitValue('pageType');
 
-            function myPlugin(editor) {
-                editor.Blocks.add('block', {
-                    label: 'Select Page type',
-                    content: {
-                        type: 'Select',
-                        content: `
-                            <select name="page_type" id="select-option" class="form-control">
-                                <option selected value="">Select type</option>
-                                ${editorOptions.map(option => `<option value="${option.id}">${option.page_type}</option>`)}
-                            </select>
-                        `,
-                    },
-                });
+                    return {
+                        columnCount,
+                        rowCount,
+                        columnSpace,
+                        rowSpace,
+                        recentPosts,
+                        selectedPageType,
+                    };
+                } else {
+                    console.error('No component selected.');
+                    return null;
+                }
             }
 
-            $('#saveButton').on('click',function(e){
-                let html= editor.getHtml();
-                let css= editor.getCss();
-                let id= $('#sel_post_type_').val();
-                console.log(id);
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('save_tempate_data') }}",
-                    type: "POST",
-                    data: {
-                        html:html,
-                        css:css
-                    },
-                    success: function(response) {
-                        if(response.success == true){
-                            console.log(response.message);
-                           
-                        }else{
-                            console.log(response.message);
+            // Function to handle the button click event
+            function handleButtonClick() {
+                const gridSettings = getGridSettingsFromEditor();
+
+                if (gridSettings) {
+                    // Send the settings to the controller using AJAX
+                    $.ajax({
+                        url: '/your-controller-endpoint',  // Replace with your actual controller endpoint
+                        method: 'POST',
+                        data: gridSettings,
+                        success: function(response) {
+                            console.log('Settings sent successfully:', response);
+                        },
+                        error: function(error) {
+                            console.error('Error sending settings:', error);
                         }
-                    },
-                    error: function(error) {
-                        console.error('Error saving data:', error);
-                    }
-                });
-            });
+                    });
+                }
+            }
+
+            // Attach the function to the button click event using jQuery
+            $('#load').on('click', handleButtonClick);
+
         </script>
     </body>
 </html>
