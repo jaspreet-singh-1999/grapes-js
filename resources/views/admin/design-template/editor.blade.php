@@ -101,7 +101,7 @@
                             label: 'Category',
                             name: 'category',
                             options:[
-                                { id: 'select', name: 'select', value: '1'},
+                                { id: 'select', name: 'select', value: '0'},
                                 { id: 'demo1', name: 'demoCateg1', value: '1'},
                                 { id: 'demo1', name: 'demoCateg2', value: '2'},
                                 { id: 'demo1', name: 'demoCateg3', value: '3'},
@@ -113,7 +113,7 @@
                             label: 'PageType',
                             name: 'pageType',
                             options:[
-                                { id: 'select', name: 'select', value: '1'},
+                                { id: 'select', name: 'select', value: '0'},
                                 { id: 'cars', name: 'cars', value: '1'},
                                 { id: 'blog', name: 'blog', value: '2'},
                                 { id: 'news', name: 'news', value: '3'},
@@ -128,57 +128,31 @@
                         // console.log('Trait already exists for this component.');
                     }
                 }
+                
             });
 
-            function getGridSettingsFromEditor() {
+            $('#load').click(function(){
                 const selectedComponent = editor.getSelected();
-                // Check if a component is selected
-                if (selectedComponent) {
-                    const columnCount = selectedComponent.getTraitValue('column-count');
-                    console.log(columnCount);
-                    const rowCount = selectedComponent.getTraitValue('row-count');
-                    const columnSpace = selectedComponent.getTraitValue('column-space');
-                    const rowSpace = selectedComponent.getTraitValue('row-space');
-                    const recentPosts = selectedComponent.getTraitValue('recent');
-                    const selectedPageType = selectedComponent.getTraitValue('pageType');
-
-                    return {
-                        columnCount,
-                        rowCount,
-                        columnSpace,
-                        rowSpace,
-                        recentPosts,
-                        selectedPageType,
-                    };
-                } else {
-                    console.error('No component selected.');
-                    return null;
-                }
-            }
-
-            // Function to handle the button click event
-            function handleButtonClick() {
-                const gridSettings = getGridSettingsFromEditor();
-
-                if (gridSettings) {
-                    // Send the settings to the controller using AJAX
+                if(selectedComponent){
+                    const recentPostVal = selectedComponent.getTrait('recent');
+                    // const category = selectedComponent.getTrait('category');
+                    const pageTypeVal = selectedComponent.getTrait('pageType');
                     $.ajax({
-                        url: '/your-controller-endpoint',  // Replace with your actual controller endpoint
-                        method: 'POST',
-                        data: gridSettings,
-                        success: function(response) {
-                            console.log('Settings sent successfully:', response);
+                        url:"{{route('get-page-details')}}",
+                        type:"Get",
+                        data:{
+                            recentPost: recentPostVal.getValue(),
+                            pageType: pageTypeVal.getValue(),
                         },
-                        error: function(error) {
-                            console.error('Error sending settings:', error);
+                        success:function(){
+
+                        },
+                        error:function(){
+
                         }
                     });
                 }
-            }
-
-            // Attach the function to the button click event using jQuery
-            $('#load').on('click', handleButtonClick);
-
+            });
         </script>
     </body>
 </html>

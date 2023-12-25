@@ -27,6 +27,10 @@ Route::get('admin-dashboard',function(){
 Route::get('login',[AuthController::class,'loginPage'])->name('login');
 Route::post('user-login',[AuthController::class,'user_login'])->name('user-login');
 
+Route::get('welcome',function(){
+   return view('welcome');
+});
+
 
 
 Route::middleware(['web','auth-user'])->group(function () {
@@ -80,6 +84,8 @@ Route::middleware(['web','auth-user'])->group(function () {
         Route::get('select-option',[DesignTemplateController::class,'showSelectOption'])->name('show-select-option');
     
         Route::get('show-editor',[DesignTemplateController::class,'show_editor'])->name('show-editor');
+
+        Route::get('get-page-details',[DesignTemplateController::class,'getPageDetails'])->name('get-page-details');
     });
 });
 

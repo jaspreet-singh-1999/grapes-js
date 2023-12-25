@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PageData;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\PageType;
@@ -93,5 +94,15 @@ class DesignTemplateController extends Controller
     public function show_editor(){
         $getPageType= PageType::get();
         return view('admin.design-template.editor',['option'=>$getPageType]);
+    }
+
+    public function getPageDetails(Request $request){
+        try{
+            $getPageDetails= PageData::where('page_id',$request->pageType)->limit($request->recentPost)->latest()->get();
+            dd($getPageDetails);
+        }catch (Exception $e){
+            dd($e->getMessage());
+        }
+        
     }
 }
