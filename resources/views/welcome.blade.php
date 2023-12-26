@@ -67,7 +67,7 @@
             let editor = grapesjs.init({
                 container: '#gjs',
                 width: 'auto',
-                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','myPlugin','grapesjs-plugin-ckeditor','custom-grid-plugin','grapesjs-plugin-toolbox','myPlugin'],
+                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','myPlugin','grapesjs-plugin-ckeditor','custom-grid-plugin','grapesjs-plugin-toolbox','myPlugin','custom-plugin.js'],
                 pluginsOpts:{
                     'grapesjs-preset-webpage': {},
                     'gjs-blocks-basic': {},
@@ -99,42 +99,28 @@
                 if(getType == 'text'){
                     const traitOptions = [
                         {
-                            type:'checkbox',
-                            label:'Masonry Grid ',
-                            name: 'masonry_grid ',
-                            value: 'masonry',
-
-                        },
-                        {
-                            type:'checkbox',
-                            label:'Horizontal Grid ',
-                            name: 'horizontal_grid ',
-                            value: 'horizontal',
-
-                        },
-                        {
-                            type:'number',
-                            label:'Columns',
+                            type: 'number',
+                            label: 'Columns',
                             name: 'columns',
                             value: '',
 
                         },
                         {
-                            type:'number',
+                            type: 'number',
                             label:'Row',
                             name: 'row',
                             value: '',
 
                         },
                         {
-                            type:'number',
+                            type: 'number',
                             label:'Columns Gap(px)',
                             name: 'columns_gap',
                             value: '',
 
                         },
                         {
-                            type:'number',
+                            type: 'number',
                             label:'Row Gap(px)',
                             name: 'row_gap',
                             value: '',
@@ -153,7 +139,7 @@
                             id: 'seleted-category',
                             label: 'Category',
                             name: 'category',
-                            options:[
+                            options: [
                                 { id: 'select', name: 'select', value: '0'},
                                 { id: 'demo1', name: 'demoCateg1', value: '1'},
                                 { id: 'demo1', name: 'demoCateg2', value: '2'},
@@ -165,23 +151,38 @@
                             id: 'pageType',
                             label: 'PageType',
                             name: 'pageType',
-                            options:[
+                            options: [
                                 { id: 'select', name: 'select', value: '0'},
                                 { id: 'cars', name: 'cars', value: '1'},
                                 { id: 'blog', name: 'blog', value: '2'},
                                 { id: 'news', name: 'news', value: '3'},
                             ]
-                        }
+                        },
+                        {
+                            type: 'checkbox',
+                            label: 'Masonry Grid ',
+                            name: 'masonry',
+                            value: 'masonry',
+
+                        },
+                        {
+                            type: 'checkbox',
+                            label: 'Horizontal Grid ',
+                            name: 'horizontal',
+                            value: 'horizontal',
+
+                        },
                     ];
-                    const existingTrait = component.getTraits().find(trait => trait.get('name') === traitOptions.name);
-                    if(!existingTrait) {
+        
+                    const existingTrait = traitOptions.find(trait => component.getTrait(trait.name));
+                    if (!existingTrait) {
                         component.addTrait(traitOptions);
-                        // console.log(`Trait added to the component: ${traitOptions.label}`);
-                    }else{
+                    } else {
                         // console.log('Trait already exists for this component.');
                     }
                 }
             });
+
         </script>
     </body>
 </html>

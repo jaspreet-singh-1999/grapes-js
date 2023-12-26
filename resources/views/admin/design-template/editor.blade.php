@@ -81,73 +81,246 @@
                 },
 
                 storageManager: {  autoload: true },
-            });   
+            }); 
+
+            function myPlugin(editor) {
+                editor.Blocks.add('my-first-block', {
+                    type: 'grid',
+                    label: 'Select Grid',
+                    content: `
+                        <style>
+                            /* Reset CSS */
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            html,
+                            body {
+                                
+                                padding: 15px;
+                            }
+                            img {
+                                max-width: 100%;
+                                height: auto;
+                                vertical-align: middle;
+                                display: inline-block;
+                            }
+
+                            /* Main CSS */
+                            .grid-wrapper > div {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                            .grid-wrapper > div > img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                border-radius: 5px;
+                            }
+
+                            .grid-wrapper {
+                                display: grid;
+                                grid-gap: 10px;
+                                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                                grid-auto-rows: 200px;
+                                grid-auto-flow: dense;
+                            }
+                            .grid-wrapper .wide {
+                                grid-column: span 2;
+                            }
+                            .grid-wrapper .tall {
+                                grid-row: span 2;
+                            }
+                            .grid-wrapper .big {
+                                grid-column: span 2;
+                                grid-row: span 2;
+                            }
+                        </style>
+                        
+                        <div class="grid-wrapper">
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="tall">
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="wide">
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="tall">
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="big">
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="wide">
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="big">
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="tall">
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div>
+                                <img src=" " alt="" />
+                            </div>
+                            <div class="wide">
+                                <img src=" " alt="" />
+                            </div>
+                        </div>
+                    `,
+                });
+            }
 
             editor.on('component:selected', (component) => {
-                let getType = component.get('type');
-                if(getType == 'css-grid'){
-                    const traitOptions = [
+                let getType = component.getClasses();
+                if(getType == 'grid-wrapper'){
+                   const traitOptions = [
                         {
                             type: 'number',
-                            id: 'recent',
-                            label: 'Recent',
-                            name: 'recent',
-                            placeholder: 'Recent post',
-                            value:''
+                            label: 'Columns',
+                            name: 'columns',
+                            value: '',
                         },
+
+                        {
+                            type: 'number',
+                            label:'Row',
+                            name: 'row',
+                            value: '',
+                        },
+
+                        {
+                            type: 'number',
+                            label:'Columns Gap(px)',
+                            name: 'columnsGap',
+                            value: '',
+                        },
+
+                        {
+                            type: 'number',
+                            label:'Row Gap(px)',
+                            name: 'rowGap',
+                            value: '',
+                        },
+
                         {
                             type: 'select',
                             id: 'seleted-category',
                             label: 'Category',
                             name: 'category',
-                            options:[
+                            options: [
                                 { id: 'select', name: 'select', value: '0'},
-                                { id: 'demo1', name: 'demoCateg1', value: '1'},
-                                { id: 'demo1', name: 'demoCateg2', value: '2'},
-                                { id: 'demo1', name: 'demoCateg3', value: '3'},
+                                { id: 'demo1', name: 'categ1', value: '1'},
+                                { id: 'demo1', name: 'categ2', value: '2'},
+                                { id: 'demo1', name: 'categ3', value: '3'},
                             ]
                         },
+
                         {
                             type: 'select',
                             id: 'pageType',
                             label: 'PageType',
                             name: 'pageType',
-                            options:[
+                            options: [
                                 { id: 'select', name: 'select', value: '0'},
                                 { id: 'cars', name: 'cars', value: '1'},
                                 { id: 'blog', name: 'blog', value: '2'},
                                 { id: 'news', name: 'news', value: '3'},
                             ]
-                        }
+                        },
+
+                        {
+                            type: 'number',
+                            label:'PostCount',
+                            name: 'postCount',
+                            value: '',
+                        },
+                        
+                        {
+                            type: 'checkbox',
+                            id: 'recent',
+                            label: 'Recent Post',
+                            name: 'recent',
+                            placeholder: 'Recent post',
+                            value: false
+                        },
+
+                        // {
+                        //     type: 'checkbox',
+                        //     label: 'Masonry Grid ',
+                        //     name: 'masonry',
+                        //     value: false
+                        // },
+
+                        {
+                            type: 'checkbox',
+                            label: 'Vertical Grid ',
+                            name: 'varticalGrid',
+                            value: false
+                        },
                     ];
-                    const existingTrait = component.getTraits().find(trait => trait.get('name') === traitOptions.name);
-                    if(!existingTrait) {
-                        component.addTrait(traitOptions);
-                        // console.log(`Trait added to the component: ${traitOptions.label}`);
-                    }else{
-                        // console.log('Trait already exists for this component.');
-                    }
+                    
+                    traitOptions.forEach(traitOption => {
+                        const existingTrait = component.getTrait(traitOption.name);
+                        if (!existingTrait) {
+                            component.addTrait(traitOption);
+                        } else {
+                            // console.log('Trait already exists for this component.');
+                        }
+                    });
                 }
-                
             });
 
             $('#load').click(function(){
-                const selectedComponent = editor.getSelected();
+                let selectedComponent = editor.getSelected();
                 if(selectedComponent){
-                    const recentPostVal = selectedComponent.getTrait('recent');
-                    // const category = selectedComponent.getTrait('category');
-                    const pageTypeVal = selectedComponent.getTrait('pageType');
+                    let pageType_v = selectedComponent.getTrait('pageType');
+                    let postCount_v = selectedComponent.getTrait('postCount');
+                    let recentPost_v = selectedComponent.getTrait('recent');
+                    // let masonryGrid_v = selectedComponent.getTrait('masonry');
+                    let verticalGrid_v = selectedComponent.getTrait('varticalGrid');
+
                     $.ajax({
                         url:"{{route('get-page-details')}}",
                         type:"Get",
                         data:{
-                            recentPost: recentPostVal.getValue(),
-                            pageType: pageTypeVal.getValue(),
+                            pageType: pageType_v.getValue(),
+                            postCount: postCount_v.getValue(),
+                            recentPost: recentPost_v.getValue(),
+                            // masonryGrid: masonryGrid_v.getValue(),
+                            verticalGrid: verticalGrid_v.getValue()
+    
                         },
-                        success:function(){
-
+                        success:function(response){
+                            if(response.success == true){
+                                console.log(response.pageDetails);
+                            }else{
+                                console.log(response.message);
+                            }
                         },
-                        error:function(){
+                        error:function(error){
 
                         }
                     });

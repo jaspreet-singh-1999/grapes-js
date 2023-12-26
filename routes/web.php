@@ -31,6 +31,11 @@ Route::get('welcome',function(){
    return view('welcome');
 });
 
+Route::get('grid',function(){
+    return view('grid-package');
+});
+ 
+
 
 
 Route::middleware(['web','auth-user'])->group(function () {

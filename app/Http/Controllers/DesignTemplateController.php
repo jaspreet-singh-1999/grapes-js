@@ -96,13 +96,45 @@ class DesignTemplateController extends Controller
         return view('admin.design-template.editor',['option'=>$getPageType]);
     }
 
+    // get selected page details
     public function getPageDetails(Request $request){
         try{
-            $getPageDetails= PageData::where('page_id',$request->pageType)->limit($request->recentPost)->latest()->get();
-            dd($getPageDetails);
+    
+            $getPageDetails= PageData::where('page_id',$request->pageType);
+            if($request->recentPost == 'true'){
+                $getPageDetails->orderBy('created_at', 'desc');
+            }
+            if($request->postCount !== '0'){
+                $getPageDetails->limit($request->postCount);
+            }
+
+            $getDetails= $getPageDetails->get();
+          
+            if($getDetails->isNotEmpty()){
+                $response= [
+                    'success'=>  true,
+                    'status'=> 200,
+                    'message'=> 'Page details found successfully',
+                    'pageDetails'=> $getDetails
+                ];
+                return response()->json($response);
+            }else{
+                $response= [
+                    'success'=>  false,
+                    'status'=> 500,
+                    'message'=> 'Page details not found '
+                ];
+                return response()->json($response);
+            }
+            
         }catch (Exception $e){
-            dd($e->getMessage());
+            $message= $e->getMessage();
+            $response= [
+                'success'=>  false,
+                'status'=> 500,
+                'message'=> $message
+            ];
+            return response()->json($response);
         }
-        
     }
 }
