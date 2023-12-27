@@ -34,6 +34,17 @@ Route::get('welcome',function(){
 Route::get('grid',function(){
     return view('grid-package');
 });
+
+Route::get('masonry',function(){
+    return view('admin.grid-template.masonry'); 
+});
+
+Route::get('hmasonry',function(){
+    return view('admin.grid-template.horizontal-masonry'); 
+});
+Route::get('simple',function(){
+    return view('admin.grid-template.simple-grid'); 
+});
  
 
 

@@ -80,116 +80,14 @@
                     'grapesjs-plugin-toolbox':{},
                 },
 
-                storageManager: {  autoload: true },
+                storageManager: {  autoload: false },
             }); 
 
             function myPlugin(editor) {
                 editor.Blocks.add('my-first-block', {
                     type: 'grid',
                     label: 'Select Grid',
-                    content: `
-                        <style>
-                            /* Reset CSS */
-                            * {
-                                margin: 0;
-                                padding: 0;
-                                box-sizing: border-box;
-                            }
-                            html,
-                            body {
-                                
-                                padding: 15px;
-                            }
-                            img {
-                                max-width: 100%;
-                                height: auto;
-                                vertical-align: middle;
-                                display: inline-block;
-                            }
-
-                            /* Main CSS */
-                            .grid-wrapper > div {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                            }
-                            .grid-wrapper > div > img {
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                                border-radius: 5px;
-                            }
-
-                            .grid-wrapper {
-                                display: grid;
-                                grid-gap: 10px;
-                                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                                grid-auto-rows: 200px;
-                                grid-auto-flow: dense;
-                            }
-                            .grid-wrapper .wide {
-                                grid-column: span 2;
-                            }
-                            .grid-wrapper .tall {
-                                grid-row: span 2;
-                            }
-                            .grid-wrapper .big {
-                                grid-column: span 2;
-                                grid-row: span 2;
-                            }
-                        </style>
-                        
-                        <div class="grid-wrapper">
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="tall">
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="wide">
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="tall">
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="big">
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="wide">
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="big">
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="tall">
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div>
-                                <img src=" " alt="" />
-                            </div>
-                            <div class="wide">
-                                <img src=" " alt="" />
-                            </div>
-                        </div>
-                    `,
+                    content: `<div class="grid-wrapper" id="grid"> Grid </div>`,  
                 });
             }
 
@@ -211,19 +109,19 @@
                             value: '',
                         },
 
-                        {
-                            type: 'number',
-                            label:'Columns Gap(px)',
-                            name: 'columnsGap',
-                            value: '',
-                        },
+                        // {
+                        //     type: 'number',
+                        //     label:'Columns Gap(px)',
+                        //     name: 'columnsGap',
+                        //     value: '',
+                        // },
 
-                        {
-                            type: 'number',
-                            label:'Row Gap(px)',
-                            name: 'rowGap',
-                            value: '',
-                        },
+                        // {
+                        //     type: 'number',
+                        //     label:'Row Gap(px)',
+                        //     name: 'rowGap',
+                        //     value: '',
+                        // },
 
                         {
                             type: 'select',
@@ -267,17 +165,17 @@
                             value: false
                         },
 
-                        // {
-                        //     type: 'checkbox',
-                        //     label: 'Masonry Grid ',
-                        //     name: 'masonry',
-                        //     value: false
-                        // },
+                        {
+                            type: 'checkbox',
+                            label: 'HoriMasonry Grid ',
+                            name: 'horiMasonry',
+                            value: false
+                        },
 
                         {
                             type: 'checkbox',
-                            label: 'Vertical Grid ',
-                            name: 'varticalGrid',
+                            label: 'Masonry',
+                            name: 'masonry',
                             value: false
                         },
                     ];
@@ -299,8 +197,11 @@
                     let pageType_v = selectedComponent.getTrait('pageType');
                     let postCount_v = selectedComponent.getTrait('postCount');
                     let recentPost_v = selectedComponent.getTrait('recent');
-                    // let masonryGrid_v = selectedComponent.getTrait('masonry');
+                    let horiMasonryGrid_v = selectedComponent.getTrait('horiMasonry');
+                    let masonryGrid_v = selectedComponent.getTrait('masonry');
                     let verticalGrid_v = selectedComponent.getTrait('varticalGrid');
+                    let columns_v = selectedComponent.getTrait('columns');
+                    let row_v = selectedComponent.getTrait('row');
 
                     $.ajax({
                         url:"{{route('get-page-details')}}",
@@ -309,16 +210,15 @@
                             pageType: pageType_v.getValue(),
                             postCount: postCount_v.getValue(),
                             recentPost: recentPost_v.getValue(),
-                            // masonryGrid: masonryGrid_v.getValue(),
-                            verticalGrid: verticalGrid_v.getValue()
-    
+                            horiMasonryGrid: horiMasonryGrid_v.getValue(),
+                            masonry: masonryGrid_v.getValue(),
+                            column: columns_v.getValue(),
+                            row: row_v.getValue()
                         },
+
                         success:function(response){
-                            if(response.success == true){
-                                console.log(response.pageDetails);
-                            }else{
-                                console.log(response.message);
-                            }
+                            console.log(response.pageDetails);
+                            editor.setComponents(response.gridHtml);
                         },
                         error:function(error){
 
