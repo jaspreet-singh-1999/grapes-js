@@ -112,7 +112,7 @@ class DesignTemplateController extends Controller
 
             $row_column= [
                 'noOfColumn'=> $request->column,
-                'noOfRow'=> $request->row
+                // 'noOfRow'=> $request->row
             ];
 
             if($getDetails->isNotEmpty()){
@@ -120,7 +120,7 @@ class DesignTemplateController extends Controller
                 if($request->masonry == 'true'){
                     $gridhtml= view('admin.grid-template.masonry',['pageDetail'=> $getDetails,'rowColumn'=> $row_column ])->render();
                 }else{
-                    $gridhtml= view('admin.grid-template.horizontal-masonry',['pageDetail'=> $getDetails,'rowColumn'=> $row_column ])->render();    
+                    $gridhtml= view('admin.grid-template.simple-grid',['pageDetail'=> $getDetails,'rowColumn'=> $row_column ])->render();    
                 }
 
                 $response= [

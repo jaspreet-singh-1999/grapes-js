@@ -43,13 +43,7 @@
         {{-- include grapesjs-custom-code plugin library --}}
         <script src="https://cdn.jsdelivr.net/npm/grapesjs-custom-code@1.0.2/dist/index.min.js
         "></script>
-
-        {{-- include grapesjs-toolbox plugin library --}}
-        <link href=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.css " rel="stylesheet">
-       
-        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-toolbox@1.0.15/dist/grapesjs-plugin-toolbox.min.js"></script>
     
-
         {{-- include grapesjs-ckeditor plugin library --}}
         <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-ckeditor@1.0.1/dist/index.min.js
         "></script>
@@ -66,7 +60,7 @@
             let editor = grapesjs.init({
                 container: '#gjs',
                 width: 'auto',
-                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','grapesjs-plugin-toolbox','myPlugin','grapesjs-plugin-ckeditor'],
+                plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','myPlugin','grapesjs-plugin-ckeditor'],
                 pluginsOpts:{
                     'grapesjs-preset-webpage': {},
                     'gjs-blocks-basic': {},
@@ -94,7 +88,7 @@
             editor.on('component:selected', (component) => {
                 let getType = component.getClasses();
                 if(getType == 'grid-wrapper'){
-                   const traitOptions = [
+                    const traitOptions = [
                         {
                             type: 'number',
                             label: 'Columns',
@@ -102,39 +96,25 @@
                             value: '',
                         },
 
-                        {
-                            type: 'number',
-                            label:'Row',
-                            name: 'row',
-                            value: '',
-                        },
-
                         // {
                         //     type: 'number',
-                        //     label:'Columns Gap(px)',
-                        //     name: 'columnsGap',
+                        //     label:'Row',
+                        //     name: 'row',
                         //     value: '',
                         // },
 
                         // {
-                        //     type: 'number',
-                        //     label:'Row Gap(px)',
-                        //     name: 'rowGap',
-                        //     value: '',
+                        //     type: 'select',
+                        //     id: 'seleted-category',
+                        //     label: 'Category',
+                        //     name: 'category',
+                        //     options: [
+                        //         { id: 'select', name: 'select', value: '0'},
+                        //         { id: 'demo1', name: 'categ1', value: '1'},
+                        //         { id: 'demo1', name: 'categ2', value: '2'},
+                        //         { id: 'demo1', name: 'categ3', value: '3'},
+                        //     ]
                         // },
-
-                        {
-                            type: 'select',
-                            id: 'seleted-category',
-                            label: 'Category',
-                            name: 'category',
-                            options: [
-                                { id: 'select', name: 'select', value: '0'},
-                                { id: 'demo1', name: 'categ1', value: '1'},
-                                { id: 'demo1', name: 'categ2', value: '2'},
-                                { id: 'demo1', name: 'categ3', value: '3'},
-                            ]
-                        },
 
                         {
                             type: 'select',
@@ -151,7 +131,7 @@
 
                         {
                             type: 'number',
-                            label:'PostCount',
+                            label:'Post Count',
                             name: 'postCount',
                             value: '',
                         },
@@ -167,7 +147,7 @@
 
                         {
                             type: 'checkbox',
-                            label: 'HoriMasonry Grid ',
+                            label: 'Simple Grid ',
                             name: 'horiMasonry',
                             value: false
                         },
@@ -201,7 +181,7 @@
                     let masonryGrid_v = selectedComponent.getTrait('masonry');
                     let verticalGrid_v = selectedComponent.getTrait('varticalGrid');
                     let columns_v = selectedComponent.getTrait('columns');
-                    let row_v = selectedComponent.getTrait('row');
+                    // let row_v = selectedComponent.getTrait('row');
 
                     $.ajax({
                         url:"{{route('get-page-details')}}",
@@ -213,11 +193,12 @@
                             horiMasonryGrid: horiMasonryGrid_v.getValue(),
                             masonry: masonryGrid_v.getValue(),
                             column: columns_v.getValue(),
-                            row: row_v.getValue()
+                            // row: row_v.getValue()
                         },
 
                         success:function(response){
                             console.log(response.pageDetails);
+                            // editor.getSelected().components(response.gridHtml)
                             editor.setComponents(response.gridHtml);
                         },
                         error:function(error){

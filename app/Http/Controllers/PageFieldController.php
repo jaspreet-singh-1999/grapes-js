@@ -134,7 +134,7 @@ class PageFieldController extends Controller
                     Storage::delete($fieldData['image']);
                     $file= $request->image;
                     $fileName= time().'-'.$file->getClientOriginalName();
-                    $filePath= $file->storeAs('pageData/'.$fileName);
+                    $filePath= $file->storeAs('public/pageData/'.$fileName);
                     $input['image']= $filePath;
                 }
 

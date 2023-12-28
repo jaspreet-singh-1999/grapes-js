@@ -92,7 +92,7 @@ class CustomFieldController extends Controller
                 $createField->created_by= Auth::user()->id;
                 $createField->save();
     
-                $message= 'Field created successfully';  
+                $message = 'Field created successfully';  
                 Toastr::success($message);
                 return redirect()->route('custom-field');
             }else{

@@ -52,44 +52,14 @@
 <div class="grid-wrapper">
     @forEach($pageDetail as $details)
         @php
-            $filedData= json_decode($details['field_data']);   
+            $items= json_decode($details['field_data']);  
         @endphp
         <div>
-            <img src="https://picsum.photos/id/10/400" alt="" />
+            <img src="{{ asset('storage/'.$items->image) }}" alt="" />
         </div>
-        <div>
-            <img src="https://picsum.photos/id/20/400" alt="" />
-        
-        </div>
-        <div class="tall">
-            <img src="https://picsum.photos/id/30/400" alt="" />
-            
-        </div>
+       
         <div class="wide">
-            <img src="https://picsum.photos/id/40/400" alt="" />
-            
-        </div>
-        <div>
-            <img src="https://picsum.photos/id/50/400" alt="" />
-        
-        </div>
-        <div class="tall">
-            <img src="https://picsum.photos/id/60/400" alt="" />
-            
-        </div>
-        <div class="big">
-            <img src="{{asset('home/teckglock/grapesjs/storage/app/'.$filedData->image)}}" alt="" />      
-        </div>
-        <div>
-            <img src="{{asset($filedData->image)}}" alt="" />
-            
-        </div>
-        <div class="wide">
-            <img src="{{asset($filedData->image)}}" alt="" />
-        </div>
-        <div>
-            <img src="{{asset($filedData->image)}}" alt="" />
-            
+            <img src="{{ asset('storage/'.$items->image) }}" alt="" />
         </div>
     @endforeach     
 </div>
