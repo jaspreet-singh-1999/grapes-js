@@ -27,26 +27,6 @@ Route::get('admin-dashboard',function(){
 Route::get('login',[AuthController::class,'loginPage'])->name('login');
 Route::post('user-login',[AuthController::class,'user_login'])->name('user-login');
 
-Route::get('welcome',function(){
-   return view('welcome');
-});
-
-Route::get('grid',function(){
-    return view('grid-package');
-});
-
-Route::get('masonry',function(){
-    return view('admin.grid-template.masonry'); 
-});
-
-Route::get('hmasonry',function(){
-    return view('admin.grid-template.horizontal-masonry'); 
-});
-Route::get('simple',function(){
-    return view('admin.grid-template.simple-grid'); 
-});
- 
-
 
 
 Route::middleware(['web','auth-user'])->group(function () {
@@ -92,13 +72,7 @@ Route::middleware(['web','auth-user'])->group(function () {
 
     // Design template for page type route
     Route::prefix('template')->group(function(){
-        Route::get('select-page-type',[DesignTemplateController::class,'selectPageType'])->name('select-page-type');
-        Route::get('edit',[DesignTemplateController::class,'edit_template'])->name('edit-template');
-        Route::get('template-editor/{id}',[DesignTemplateController::class,'editor'])->name('template-editor');
-        Route::post('save',[DesignTemplateController::class,'save_tempate_data'])->name('save_tempate_data');
 
-        Route::get('select-option',[DesignTemplateController::class,'showSelectOption'])->name('show-select-option');
-    
         Route::get('show-editor',[DesignTemplateController::class,'show_editor'])->name('show-editor');
 
         Route::get('get-page-details',[DesignTemplateController::class,'getPageDetails'])->name('get-page-details');

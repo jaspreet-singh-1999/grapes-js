@@ -200,9 +200,10 @@
                             console.log(response.pageDetails);
                             // editor.getSelected().components(response.gridHtml)
                             editor.setComponents(response.gridHtml);
+                            toastr.success(response.message);
                         },
                         error:function(error){
-
+                            console.error('Ajax request failed:',error);
                         }
                     });
                 }

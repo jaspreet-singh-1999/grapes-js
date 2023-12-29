@@ -167,13 +167,13 @@
                         status: status,
                         password:protected_password 
                     },
-                    success:function(data){
-                        if(data.success== true){
+                    success:function(response){
+                        if(response.success== true){
                             $('#pageModal').modal('hide')
-                            toastr.success(data.message);
+                            toastr.success(response.message);
                             table.draw();
                         }else{
-                            toastr.error(data.message);
+                            toastr.error(response.message);
                         }
                     }
                 });
@@ -219,13 +219,13 @@
                         status: status,
                         description: description
                     },
-                    success:function(data){
-                        if(data.success== true){
+                    success:function(response){
+                        if(response.success== true){
                             $('#pageEditModal').modal('hide')
-                            toastr.success(data.message)
+                            toastr.success(response.message)
                             table.draw();
                         }else{
-                            toastr.error(data.message)
+                            toastr.error(response.message)
                         }
                     }
                 });
@@ -240,13 +240,13 @@
                     data:{
                         page_id: page_id,
                     },
-                    success:function(data){
-                        if(data.page_status == 3){
+                    success:function(response){
+                        if(response.page_status == 3){
                         button_text.text('Unpublish')
-                        toastr.success(data.message)
+                        toastr.success(response.message)
                         }else{
                             button_text.text('Publish')
-                            toastr.success(data.message)
+                            toastr.success(response.message)
                         }
                     }
                 });

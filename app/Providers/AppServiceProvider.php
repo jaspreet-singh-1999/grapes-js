@@ -29,13 +29,6 @@ class AppServiceProvider extends ServiceProvider
                 $page= PageType::where('created_by',$user->id)->where('status','!=',0)->get();
             }
             $view->with(['pageTypes'=>$page]);
-           
-        });
-
-        view()->composer('admin.pages.assign-template', function ($view) {
-            $pageTemplate= DesignedTemplates::with("page")->get();
-            $view->with(['pageTemplate' => $pageTemplate->isNotEmpty() ? $pageTemplate : []]);
-           
         });
     }
 }

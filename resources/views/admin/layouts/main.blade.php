@@ -104,7 +104,6 @@
                     @yield('content')
 
                 </div>
-                @include('admin.pages.assign-template')
                 
                 @include('admin.layouts.footer')
 

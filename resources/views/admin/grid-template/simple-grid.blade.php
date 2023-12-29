@@ -3,13 +3,15 @@
         <style>
             .grid-wrapper {
                 display: grid;
-                grid-template-columns: repeat({{ $rowColumn['noOfColumn'] }}, 1fr);
-                gap: 10px; 
+                grid-template-columns: repeat({{ $rowColumn['noOfColumn'] }}, minmax(0, 1fr));
+                gap: 10px;
+               
             }
             .grid-wrapper img {
                 width: 100%; 
                 height: 150px; 
-                object-fit: cover; 
+                /* object-fit: cover;  */
+                object-fit: contain;
             }
 
         </style>
