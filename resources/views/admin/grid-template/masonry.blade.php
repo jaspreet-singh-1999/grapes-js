@@ -43,9 +43,9 @@
                 grid-gap: 10px;
                 grid-template-columns: repeat({{ $rowColumn['noOfColumn'] }}, 1fr); 
                 grid-auto-flow: dense; 
+                /* grid-auto-rows: auto; */
             }
         </style>
-    
     </head>
     <body>
         <div class="grid-wrapper">
@@ -64,7 +64,6 @@
                 </div>
                 <div>
                     <img src="{{ asset('storage/'.$items->image) }}" alt="" />
-                    {{-- <p>Demo Text Demo Text Demo </p> --}}
                     <h3>{{$items->model}}</h3>
                 </div>
             @endforeach     

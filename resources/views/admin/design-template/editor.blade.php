@@ -17,36 +17,31 @@
         
         {{-- include grapes-js-preset-webpage plugin library --}}
         <script src="{{asset('grapes-js/grapesjs-preset-webpage.min.js')}}"></script>
-        
         <link rel="stylesheet" href="{{ asset('grapes-js/css/grapesjs-preset-webpage.min.css') }}">
 
         {{-- include grapesjs-blocks-basic plugin library --}}
         <script src="{{asset('grapes-js/grapesjs-blocks-basic.min.js')}}"></script>
 
         {{-- include grapesjs-plugin-forms library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-plugin-forms@2.0.6/dist/index.min.js"></script>
-
+        <script src="{{asset('grapes-js/grapesjs-plugin-forms.js')}}"></script>
+        
         {{-- include grapesjs countdown plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-component-countdown@1.0.2/dist/index.min.js"></script> 
+        <script src="{{asset('grapes-js/grapesjs-component-countdown.js')}}"></script>
         
         {{-- include grapesjs-tabs plugin library --}}
-        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-tabs@1.0.6/dist/grapesjs-tabs.min.js "></script>
+        <script src="{{asset('grapes-js/grapesjs-tabs.js')}}"></script>
 
         {{-- include grapesjs-tooltip plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-tooltip@0.1.8/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-tooltip.js')}}"></script>
 
         {{-- include grapesjs-typed plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-typed@2.0.1/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-typed.js')}}"></script>
 
         {{-- include grapesjs-custom-code plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-custom-code@1.0.2/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-custom-code.js')}}"></script>
     
         {{-- include grapesjs-ckeditor plugin library --}}
-        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-plugin-ckeditor@1.0.1/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-plugin-ckeditor.js')}}"></script>
      
     </head>
     <body>
@@ -54,26 +49,13 @@
         <div id="gjs"></div>
         <button id="load" class=''>Load </button>
         <script>
-            let editorOptions= @json($option);
+            let pageTypeOptions= @json($option);
 
             // Initialize GrapesJS
             let editor = grapesjs.init({
                 container: '#gjs',
                 width: 'auto',
                 plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','myPlugin','grapesjs-plugin-ckeditor'],
-                pluginsOpts:{
-                    'grapesjs-preset-webpage': {},
-                    'gjs-blocks-basic': {},
-                    'grapesjs-plugin-forms': {},
-                    'grapesjs-component-countdown':{},
-                    'grapesjs-tabs': {},
-                    'grapesjs-tooltip': {},
-                    'grapesjs-typed': {},
-                    'grapesjs-custom-code': {},
-                    'grapesjs-blocks-flexbox':{},
-                    'grapesjs-plugin-toolbox':{},
-                },
-
                 storageManager: {  autoload: false },
             }); 
 
@@ -97,22 +79,16 @@
                         },
 
                         // {
-                        //     type: 'number',
-                        //     label:'Row',
-                        //     name: 'row',
-                        //     value: '',
-                        // },
-
-                        // {
                         //     type: 'select',
-                        //     id: 'seleted-category',
-                        //     label: 'Category',
-                        //     name: 'category',
+                        //     id: 'pageType',
+                        //     label: 'PageType',
+                        //     name: 'pageType',
                         //     options: [
+
                         //         { id: 'select', name: 'select', value: '0'},
-                        //         { id: 'demo1', name: 'categ1', value: '1'},
-                        //         { id: 'demo1', name: 'categ2', value: '2'},
-                        //         { id: 'demo1', name: 'categ3', value: '3'},
+                        //         { id: 'cars', name: 'cars', value: '1'},
+                        //         { id: 'blog', name: 'blog', value: '2'},
+                        //         { id: 'news', name: 'news', value: '3'},
                         //     ]
                         // },
 
@@ -121,12 +97,10 @@
                             id: 'pageType',
                             label: 'PageType',
                             name: 'pageType',
-                            options: [
-                                { id: 'select', name: 'select', value: '0'},
-                                { id: 'cars', name: 'cars', value: '1'},
-                                { id: 'blog', name: 'blog', value: '2'},
-                                { id: 'news', name: 'news', value: '3'},
-                            ]
+                            options: pageTypeOptions.map(options => ({
+                                name:options.page_type,
+                                value:options.id
+                            }))
                         },
 
                         {
@@ -165,7 +139,7 @@
                         if (!existingTrait) {
                             component.addTrait(traitOption);
                         } else {
-                            // console.log('Trait already exists for this component.');
+                            console.log('Trait already exists for this component.');
                         }
                     });
                 }
@@ -181,7 +155,6 @@
                     let masonryGrid_v = selectedComponent.getTrait('masonry');
                     let verticalGrid_v = selectedComponent.getTrait('varticalGrid');
                     let columns_v = selectedComponent.getTrait('columns');
-                    // let row_v = selectedComponent.getTrait('row');
 
                     $.ajax({
                         url:"{{route('get-page-details')}}",
@@ -193,7 +166,6 @@
                             horiMasonryGrid: horiMasonryGrid_v.getValue(),
                             masonry: masonryGrid_v.getValue(),
                             column: columns_v.getValue(),
-                            // row: row_v.getValue()
                         },
 
                         success:function(response){

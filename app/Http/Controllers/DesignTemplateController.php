@@ -21,7 +21,7 @@ class DesignTemplateController extends Controller
     // get selected page details
     public function getPageDetails(Request $request){
         try{
-            
+    
             $getPageDetails= PageData::where('page_id',$request->pageType);
             if($request->recentPost == 'true'){
                 $getPageDetails->orderBy('created_at', 'desc');
@@ -32,10 +32,7 @@ class DesignTemplateController extends Controller
 
             $getDetails= $getPageDetails->get();
 
-            $row_column= [
-                'noOfColumn'=> $request->column,
-                // 'noOfRow'=> $request->row
-            ];
+            $row_column= [ 'noOfColumn'=> $request->column];
 
             if($getDetails->isNotEmpty()){
 

@@ -17,32 +17,31 @@
         
         {{-- include grapes-js-preset-webpage plugin library --}}
         <script src="{{asset('grapes-js/grapesjs-preset-webpage.min.js')}}"></script>
-        
         <link rel="stylesheet" href="{{ asset('grapes-js/css/grapesjs-preset-webpage.min.css') }}">
 
         {{-- include grapesjs-blocks-basic plugin library --}}
         <script src="{{asset('grapes-js/grapesjs-blocks-basic.min.js')}}"></script>
 
         {{-- include grapesjs-plugin-forms library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-plugin-forms@2.0.6/dist/index.min.js"></script>
-
+        <script src="{{asset('grapes-js/grapesjs-plugin-forms.js')}}"></script>
+        
         {{-- include grapesjs countdown plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-component-countdown@1.0.2/dist/index.min.js"></script> 
+        <script src="{{asset('grapes-js/grapesjs-component-countdown.js')}}"></script>
         
         {{-- include grapesjs-tabs plugin library --}}
-        <script src=" https://cdn.jsdelivr.net/npm/grapesjs-tabs@1.0.6/dist/grapesjs-tabs.min.js "></script>
-
+        <script src="{{asset('grapes-js/grapesjs-tabs.js')}}"></script>
+        
         {{-- include grapesjs-tooltip plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-tooltip@0.1.8/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-tooltip.js')}}"></script>
 
         {{-- include grapesjs-typed plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-typed@2.0.1/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-typed.js')}}"></script>
 
         {{-- include grapesjs-custom-code plugin library --}}
-        <script src="https://cdn.jsdelivr.net/npm/grapesjs-custom-code@1.0.2/dist/index.min.js
-        "></script>
+        <script src="{{asset('grapes-js/grapesjs-custom-code.js')}}"></script>
+
+        {{-- include grapesjs-ckeditor plugin library --}}
+        <script src="{{asset('grapes-js/grapesjs-plugin-ckeditor.js')}}"></script>
      
     </head>
     <body>
@@ -59,16 +58,6 @@
                 components: '',
                 width: 'auto',
                 plugins: ['grapesjs-preset-webpage','gjs-blocks-basic','grapesjs-plugin-forms','grapesjs-component-countdown','grapesjs-tabs','grapesjs-tooltip','grapesjs-typed','grapesjs-custom-code','custom-plugin','dropdownOptionPlugin'],
-                pluginsOpts:{
-                    'grapesjs-preset-webpage': {},
-                    'gjs-blocks-basic': {},
-                    'grapesjs-plugin-forms': {},
-                    'grapesjs-component-countdown':{},
-                    'grapesjs-tabs': {},
-                    'grapesjs-tooltip': {},
-                    'grapesjs-typed': {},
-                    'grapesjs-custom-code': {}
-                },
                 storageManager: {  autoload: false },
     
             });
@@ -102,7 +91,6 @@
                     }
                 });
             });
-
         </script>
     </body>
 </html>

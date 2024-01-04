@@ -28,7 +28,6 @@ Route::get('login',[AuthController::class,'loginPage'])->name('login');
 Route::post('user-login',[AuthController::class,'user_login'])->name('user-login');
 
 
-
 Route::middleware(['web','auth-user'])->group(function () {
 
     Route::prefix('web-page')->group(function(){
@@ -72,16 +71,13 @@ Route::middleware(['web','auth-user'])->group(function () {
 
     // Design template for page type route
     Route::prefix('template')->group(function(){
-
         Route::get('show-editor',[DesignTemplateController::class,'show_editor'])->name('show-editor');
-
         Route::get('get-page-details',[DesignTemplateController::class,'getPageDetails'])->name('get-page-details');
     });
 });
 
 // for public use url
 Route::get('/{page_slug}', [AuthController::class,'page_using_slug'])->name('page-slug');
-
 // for admin url 
 Route::get('/admin/{page_slug}',[AuthController::class,'homePage'])->name('home');
 
